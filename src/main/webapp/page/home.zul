@@ -1,0 +1,7 @@
+<?page title="Welcome to IGLO Employee Reimburse" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Welcome to IGLO Employee Reimburse"
+		border="normal">
+		New Content Here!
+	</window>
+</zk>

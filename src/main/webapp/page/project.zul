@@ -1,0 +1,69 @@
+<?page title="Project" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Project" border="normal">
+
+		<hlayout>
+			<button label="add" height="30px" />
+			<button label="edit" height="30px" />
+			<button label="delete" height="30px" />
+		</hlayout>
+		
+		<space></space>
+
+				<div style="text-align:right">
+					<label value="search : " />
+					<textbox value="" width="200px" />
+				</div>
+
+				<div>
+					<listbox mold="paging" pagingPosition="bottom"
+						pageSize="10">
+
+						<listhead>
+							<listheader label="Kode Project"
+								sort="auto" width="100px"/>
+							<listheader label="Nama Project"
+								sort="auto" />
+						</listhead>
+
+						<template name="model">
+							<listitem>
+								<listcell label="" />
+								<listcell label="" />
+							</listitem>
+						</template>
+					</listbox>
+				</div>
+
+
+		<window visible="" width="350px" height="120px"
+			mode="modal" contentStyle="overflow:auto"
+			style="-webkit-box-shadow: 1px 1px 5px 3px #969696;
+			box-shadow: 1px 1px 5px 3px #969696;"
+			title="Add Project">
+
+			<grid>
+				<columns>
+					<column width="100px"></column>
+					<column></column>
+				</columns>
+				<rows>
+					<row>
+						<label value="Nama Project : " />
+						<textbox value="" width="215px"
+							tabindex="1" />
+					</row>
+
+					<row>
+						<label value="" />
+						<hlayout>
+							<button label="save" height="30px" />
+							<button label="back" height="30px" />
+						</hlayout>
+					</row>
+				</rows>
+			</grid>
+			
+		</window>
+	</window>
+</zk>

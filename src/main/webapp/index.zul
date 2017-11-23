@@ -1,6 +1,12 @@
-<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+
+<?link rel="stylesheet" type="text/css" href="/css/style.css"?>
+<?link rel="shortcut icon" type="image/x-icon" href="./imgs/logo.png"?>
+<?link rel="icon" type="image/x-icon" href="./imgs/logo.png"?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/layout/template.zul" ?>
+<?page id="index" title="IGLO Employee Reimburse" ?>
 <zk>
-<window title="new page title" border="normal">
-New Content Here!
-</window>
+	<include id="mainInclude" mode="instant" self="@define(mainContent)"
+		apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('pagevmd.NavigationVmd')"
+		src="@bind(vm.includeSrc)">
+	</include>
 </zk>

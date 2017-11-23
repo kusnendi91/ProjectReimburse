@@ -1,0 +1,117 @@
+<?page title="Employee Management" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Employee Management" border="normal"
+		apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm') @init('vmd.karyawanVmd')">
+
+		<hlayout>
+			<button label="add" image="/imgs/Preview_16x16.png"
+				hoverImage="/imgs/Check_16x16.png" height="30px"
+				onClick="@command('addEmployee')" />
+			<button label="edit" image="/imgs/Check_16x16.png"
+				hoverImage="/imgs/Save_16x16.png" height="30px"
+				onClick="@command('editEmployee')" />
+			<button label="delete" image="/imgs/Cancel_16x16.png"
+				hoverImage="/imgs/Delete_16x16.png" height="30px"
+				onClick="@command('deleteEmployee')" />
+		</hlayout>
+		<div style="text-align:right">
+			<label value="Cari" />
+			<textbox value="@bind(vm.search)" onOK="@command('search')" />
+		</div>
+		<space />
+
+		<listbox model="@load(vm.listKaryawan)"
+			selectedItem="@bind(vm.mstKaryawan)" mold="paging"
+			pagingPosition="bottom" pageSize="10">
+
+			<listhead>
+				<listheader label="NIK" sort="auto" width="100px" />
+				<listheader label="Nama Karyawan" width="300px" />
+				<listheader label="Jenis Kelamin" width="100px" />
+				<listheader label="Company" width="100px" />
+				<listheader label="Tanggal Masuk" width="100px" />
+				<listheader label="No Absen" width="100px" />
+				<listheader label="No Rekening" />
+			</listhead>
+
+			<template name="model">
+				<listitem>
+					<listcell label="@load(each.nik)" />
+					<listcell label="@load(each.namaKaryawan)" />
+					<listcell label="@load(each.jenisKelamin)" />
+					<listcell label="@load(each.company)" />
+					<listcell label="@load(each.tanggalMasuk)" />
+					<listcell label="@load(each.noAbsen)" />
+					<listcell label="@load(each.noRekening)" />
+				</listitem>
+			</template>
+		</listbox>
+		<window title="Employee Form" border="normal"
+			visible="@bind(vm.statusPopUp)" width="400px" height="330px"
+			mode="modal" contentStyle="overflow:auto"
+			style="-webkit-box-shadow: 1px 1px 10px 3px #969696; 
+   						   box-shadow: 1px 1px 10px 3px #969696;">
+			<grid>
+				<columns>
+					<column label="" width="150px" />
+					<column label="" width="200px" />
+				</columns>
+				<rows>
+					<row>
+						<label value="NIK" />
+						<textbox constraint="no empty : NIK harus diisi"
+							value="@bind(vm.mstKaryawan.nik)" disabled="@load(vm.disable)" />
+					</row>
+					<row>
+						<label value="Nama Karyawan" />
+						<textbox
+							value="@bind(vm.mstKaryawan.namaKaryawan)"
+							constraint="no empty : Nama harus diisi" />
+					</row>
+					<row>
+						<label value="Jenis Kelamin" />
+						<textbox
+							value="@bind(vm.mstKaryawan.jenisKelamin)" />
+					</row>
+					<row>
+						<label value="Company" />
+						<combobox model="@load(vm.listStatus)"
+							selectedItem="@bind(vm.mstKaryawan.company)">
+
+						</combobox>
+					</row>
+
+					<row>
+						<label value="Tanggal Masuk" />
+						<datebox
+							value="@bind(vm.mstKaryawan.tanggalMasuk)" />
+
+					</row>
+
+
+					<row>
+						<label value="No Absen" />
+						<textbox value="@bind(vm.mstKaryawan.noAbsen)"
+							constraint="no empty : No Absen harus diisi" />
+					</row>
+
+					<row>
+						<label value="No Rekening" />
+						<textbox
+							value="@bind(vm.mstKaryawan.noRekening)" />
+					</row>
+					<row>
+						<label value="" />
+						<hlayout>
+							<button label="Save"
+								onClick="@command('save')" />
+							<button label="End"
+								onClick="@command('back')" />
+						</hlayout>
+					</row>
+				</rows>
+			</grid>
+		</window>
+	</window>
+</zk>

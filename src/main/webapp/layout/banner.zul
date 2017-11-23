@@ -1,0 +1,10 @@
+<div hflex="1" vflex="1" sclass="banner">
+	<hbox hflex="1" vflex="1" align="center">
+		<a href="http://www.indocyber.co.id/">
+			<image src="/imgs/logo.png" width="90px" />
+		</a>
+		<div width="600px">
+			<label value="IGLO Employee Reimburse" sclass="banner-head"></label>
+		</div>
+	</hbox>
+</div>

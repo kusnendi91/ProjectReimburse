@@ -1,0 +1,16 @@
+<grid hflex="1" vflex="1" sclass="sidebar" id="fnList"
+	apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('pagevmd.SidebarAjaxBased')"
+	model="@load(vm.sidebarPage)">
+	<columns>
+		<column width="36px"></column>
+		<column></column>
+	</columns>
+	<rows>
+		<template name="model">
+			<row sclass="sidebar-fn" onClick="@global-command('onNavigate', page=each)">
+				<image src="@load(each.iconUri)"></image>
+				<label value="@load(each.label)"></label>
+			</row>
+		</template>
+	</rows>
+</grid>
