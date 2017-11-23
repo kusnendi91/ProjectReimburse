@@ -27,9 +27,13 @@ public class MstUserDaoImpl implements MstUserDao {
 
 	@Autowired
 	MstKaryawanDao mstKaryawanDao;
+	MstKaryawan mstKaryawan;
+	String nik;
 
 	@Autowired
 	MstLevelDao mstLevelDao;
+	MstLevel mstLevel;
+	int kodeLevel;
 
 	@Override
 	public void save(MstUser mstUser) {
@@ -269,6 +273,46 @@ public class MstUserDaoImpl implements MstUserDao {
 			}
 		}
 		return listUser;
+	}
+	
+	@Override
+	public MstUser findByUsernameAndPassword(String username,
+			String password) {
+		String query = "select * from MST_USER "
+				+ "WHERE NIK='" +username+"' and PASSWORD = '"+password+"'";
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		MstUser mstUser = new MstUser();
+		
+		try{
+			con = dataSource.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			while(rs.next()){
+				mstUser.setKodeUser(rs.getInt("KODE_USER"));
+				nik = (rs.getString("NIK"));
+				mstKaryawan = mstKaryawanDao.findOne(nik);
+				mstUser.setMstKaryawan(mstKaryawan);
+				kodeLevel = (rs.getInt("KODE_LEVEL"));
+				mstLevel = mstLevelDao.findOne(kodeLevel);
+				mstUser.setMstLevel(mstLevel);
+				mstUser.setPassword(rs.getString("PASSWORD"));
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			try{
+				rs.close();
+				ps.close();
+				con.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+		return mstUser;
 	}
 
 }

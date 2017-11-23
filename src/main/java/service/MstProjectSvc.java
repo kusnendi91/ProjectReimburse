@@ -2,8 +2,9 @@ package service;
 
 import java.util.List;
 
+
 import entity.MstProject;
-import entity.MstUser;
+
 
 public interface MstProjectSvc {
 	public void save(MstProject mstProject);

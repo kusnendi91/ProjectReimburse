@@ -282,5 +282,7 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 
 		return mstKaryawan;
 	}
+	
+	
 
 }

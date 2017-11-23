@@ -45,4 +45,10 @@ public class MstUserSvcImpl implements MstUserSvc{
 		return mstUserDao.searchData(key);
 	}
 
+	@Override
+	public MstUser login(String username, String password) {
+		// TODO Auto-generated method stub
+		return mstUserDao.findByUsernameAndPassword(username, password);
+	}
+
 }
