@@ -1,5 +1,6 @@
 package service.impl;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,11 @@ public class HistorySvcImpl implements HistorySvc{
 	@Override
 	public List<History> searchData(String key) {
 		return historyDao.searchData(key);
+	}
+
+	@Override
+	public List<History> findUpdate(String nik, String namaProject, Date periode, Date historyDate) {
+		return historyDao.findUpdate(nik, namaProject, periode, historyDate);
 	}
 
 }

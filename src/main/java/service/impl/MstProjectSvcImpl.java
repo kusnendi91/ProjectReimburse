@@ -45,4 +45,9 @@ public class MstProjectSvcImpl implements MstProjectSvc{
 		return mstProjectDao.searchData(key);
 	}
 
+	@Override
+	public MstProject findNama(String namaProject) {
+		return mstProjectDao.findNama(namaProject);
+	}
+
 }

@@ -75,7 +75,8 @@
 					<row>
 						<label value="Jenis Kelamin" />
 						<textbox
-							value="@bind(vm.mstKaryawan.jenisKelamin)" />
+							value="@bind(vm.mstKaryawan.jenisKelamin)"
+							onChange="@command('cekIsi')" />
 					</row>
 					<row>
 						<label value="Company" />

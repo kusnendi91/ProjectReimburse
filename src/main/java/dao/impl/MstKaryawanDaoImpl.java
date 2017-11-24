@@ -208,7 +208,7 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 				+ "WHERE (NIK LIKE '"+search+"' OR NAMA LIKE '"+search+"' "
 				+ "OR COMPANY LIKE '"+search+"' OR NO_ABSEN LIKE '"+search+"' "
 				+ "OR JENIS_KELAMIN LIKE '"+search+"' OR TANGGAL_MASUK LIKE '"+search+"' "
-				+ "OR NO_REKENING LIKE '"+search+"')";
+				+ "OR NO_REKENING LIKE '"+search+"') ORDER BY NAMA";
 
 		List<MstKaryawan> listKaryawan = new ArrayList<>();
 

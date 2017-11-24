@@ -33,7 +33,7 @@ public class projectVmd {
 	private boolean disable = false;
 
 	private int flagtambah = 0;
-	
+
 	public int getFlagtambah() {
 		return flagtambah;
 	}
@@ -103,17 +103,16 @@ public class projectVmd {
 		listProject = mstProjectSvc.findAll();
 		setStatusPopUp(false);
 	}
-	
-	
+
 	@Command("search")
 	@NotifyChange("listProject")
 	public void search() {
 		listProject.clear();
 		listProject = mstProjectSvc.searchData(search);
 	}
-	
+
 	@Command("addProject")
-	@NotifyChange({ "statusPopUp", "mstProject", "disable", "flagtambah"})
+	@NotifyChange({ "statusPopUp", "mstProject", "disable", "flagtambah" })
 	public void add() {
 		setStatusPopUp(true);
 		setDisable(false);
@@ -122,7 +121,7 @@ public class projectVmd {
 	}
 
 	@Command("editProject")
-	@NotifyChange({ "statusPopUp", "mstProject", "disable", "flagtambah"})
+	@NotifyChange({ "statusPopUp", "mstProject", "disable", "flagtambah" })
 	public void edit() {
 		if (mstProject == null) {
 			Messagebox.show("Pilih data yang akan diedit!");
@@ -147,37 +146,34 @@ public class projectVmd {
 			Messagebox.show("Pilih data yang akan dihapus!");
 		}
 	}
-	
+
 	@Command("back")
-	@NotifyChange({"mstProject","statusPopUp"})
+	@NotifyChange({ "mstProject", "statusPopUp" })
 	public void backDetail() {
 		mstProject = null;
 		setStatusPopUp(false);
 	}
-	
-	
-	@Command("save")
-	@NotifyChange({"statusPopUp", "mstProject"})
-	public void save(){
-		try {
-			MstProject findProject = mstProjectSvc.findOne(mstProject.getKodeProject());
 
-			if (findProject.getKodeProject() == mstProject.getKodeProject()) {
-							mstProjectSvc.save(mstProject);
-							Clients.showNotification("Data berhasil disimpan",
-									Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
-							setStatusPopUp(false);
-							setStatusPopUp(true);
-							add();
-			} else if (findProject.getKodeProject() != mstProject.getKodeProject()) {
-							mstProjectSvc.update(mstProject);
-							Clients.showNotification("Data berhasil diupdate",
-									Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
-							setStatusPopUp(false);
+	@Command("save")
+	@NotifyChange({ "statusPopUp", "mstProject" })
+	public void save() {
+		try {
+			if (mstProject.getKodeProject() != 0) {
+				mstProjectSvc.update(mstProject);
+				Clients.showNotification("Data berhasil diupdate",
+						Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
+				setStatusPopUp(false);
+			} else {
+				mstProjectSvc.save(mstProject);
+				Clients.showNotification("Data berhasil disimpan",
+						Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
+				setStatusPopUp(false);
+				setStatusPopUp(true);
+				add();
 			}
 		} catch (Exception e) {
 			Messagebox.show("ERROR! Silahkan cek kembali inputan Anda!");
 		}
 	}
-	
+
 }

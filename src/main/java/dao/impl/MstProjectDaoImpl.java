@@ -114,7 +114,7 @@ public class MstProjectDaoImpl implements MstProjectDao{
 
 	@Override
 	public List<MstProject> findAll() {
-		String query = "SELECT * FROM MST_PROJECT";
+		String query = "SELECT * FROM MST_PROJECT ORDER BY NAMA_PROJECT";
 		List<MstProject> listProject = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -186,7 +186,7 @@ public class MstProjectDaoImpl implements MstProjectDao{
 
 		String query = "SELECT * "
 				+ "FROM MST_PROJECT "
-				+ "WHERE (KODE_PROJECT LIKE '"+search+"' OR NAMA_PROJECT LIKE '"+search+"')";
+				+ "WHERE (KODE_PROJECT LIKE '"+search+"' OR NAMA_PROJECT LIKE '"+search+"') ORDER BY NAMA_PROJECT";
 
 		List<MstProject> listProject = new ArrayList<>();
 
@@ -217,6 +217,39 @@ public class MstProjectDaoImpl implements MstProjectDao{
 			}
 		}
 		return listProject;
+	}
+
+	@Override
+	public MstProject findNama(String namaProject) {
+		String query = "SELECT * FROM MST_PROJECT WHERE NAMA_PROJECT = '"
+				+ namaProject + "'";
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		MstProject mstProject = new MstProject();
+		
+		try {
+			con = dataSource.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				mstProject.setKodeProject(rs.getInt("KODE_PROJECT"));
+				mstProject.setNamaProject(rs.getString("NAMA_PROJECT"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ps.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return mstProject;
 	}
 
 }

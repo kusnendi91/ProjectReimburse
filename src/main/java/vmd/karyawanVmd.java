@@ -210,4 +210,17 @@ public class karyawanVmd {
 			Messagebox.show("ERROR! Silahkan cek kembali inputan Anda!");
 		}
 	}
+	
+	
+	@Command("cekIsi")
+	@NotifyChange("mstKaryawan")
+	public void cekIsi(){
+		if (mstKaryawan.getJenisKelamin().equals("L") || mstKaryawan.getJenisKelamin().equals("P")) {
+			
+		}else{
+			Messagebox.show("ERROR! Cek kembali inputan! Inputan Jenis Kelamin L/P");
+			mstKaryawan.setJenisKelamin(null);
+		}
+		
+	}
 }

@@ -11,5 +11,6 @@ public interface MstProjectSvc {
 	public void delete(int kodeProject);
 	public List<MstProject> findAll();
 	public MstProject findOne(int kodeProject);
+	public MstProject findNama(String namaProject);
 	public List<MstProject> searchData(String key);
 }

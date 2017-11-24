@@ -11,4 +11,5 @@ public interface MstProjectDao {
 	public List<MstProject> findAll();
 	public MstProject findOne(int kodeProject);
 	public List<MstProject> searchData(String key);
+	public MstProject findNama(String namaProject);
 }

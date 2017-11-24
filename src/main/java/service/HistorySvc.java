@@ -1,5 +1,6 @@
 package service;
 
+import java.sql.Date;
 import java.util.List;
 
 import entity.History;
@@ -11,4 +12,5 @@ public interface HistorySvc {
 	public List<History> findAll();
 	public History findOne(int kodeHistory);
 	public List<History> searchData(String key);
+	public List<History> findUpdate(String nik, String namaProject, Date periode, Date historyDate);
 }
