@@ -140,7 +140,7 @@ public class projectVmd {
 			mstProjectSvc.delete(mstProject.getKodeProject());
 			listProject.remove(mstProject);
 			BindUtils.postNotifyChange(null, null, projectVmd.this,
-					"listKaryawan");
+					"listProject");
 			Clients.showNotification("Data berhasil di delete",
 					Clients.NOTIFICATION_TYPE_INFO, null, null, 500);
 		} catch (NullPointerException e) {
@@ -156,35 +156,28 @@ public class projectVmd {
 	}
 	
 	
-//	@Command("save")
-//	@NotifyChange({"statusPopUp", "mstProject"})
-//	public void save(){
-//		try {
-//			MstProject findProject = mstProjectSvc.findOne(mstProject.getKodeProject());
-//
-//			if (findProject.getKodeProject() == ) {
-//							mstKaryawanSvc.save(mstKaryawan);
-//							Clients.showNotification("Data berhasil disimpan",
-//									Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
-//							setStatusPopUp(false);
-//							mstKaryawan = null;
-//							setStatusPopUp(true);
-//			} else if (findKaryawan.getNik() != null) {
-//				if (mstKaryawan.getCompany().equals("IGT") || 
-//						(mstKaryawan.getCompany().equals("IMK")) || 
-//						(mstKaryawan.getCompany().equals("ICN")) || 
-//						(mstKaryawan.getCompany().equals("SBY"))) {
-//							mstKaryawanSvc.update(mstKaryawan);
-//							Clients.showNotification("Data berhasil diupdate",
-//									Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
-//							setStatusPopUp(false);
-//				} else {
-//					Messagebox.show("ERROR! Inputan status tidak sesuai! Cek kembali inputan.");
-//				}
-//			}
-//		} catch (Exception e) {
-//			Messagebox.show("ERROR! Silahkan cek kembali inputan Anda!");
-//		}
-//	}
+	@Command("save")
+	@NotifyChange({"statusPopUp", "mstProject"})
+	public void save(){
+		try {
+			MstProject findProject = mstProjectSvc.findOne(mstProject.getKodeProject());
+
+			if (findProject.getKodeProject() == mstProject.getKodeProject()) {
+							mstProjectSvc.save(mstProject);
+							Clients.showNotification("Data berhasil disimpan",
+									Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
+							setStatusPopUp(false);
+							setStatusPopUp(true);
+							add();
+			} else if (findProject.getKodeProject() != mstProject.getKodeProject()) {
+							mstProjectSvc.update(mstProject);
+							Clients.showNotification("Data berhasil diupdate",
+									Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
+							setStatusPopUp(false);
+			}
+		} catch (Exception e) {
+			Messagebox.show("ERROR! Silahkan cek kembali inputan Anda!");
+		}
+	}
 	
 }

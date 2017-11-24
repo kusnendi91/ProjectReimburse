@@ -25,14 +25,13 @@ public class MstProjectDaoImpl implements MstProjectDao{
 	@Override
 	public void save(MstProject mstProject) {
 		String query = "INSERT INTO MST_PROJECT "
-				+ "(KODE_PROJECT, NAMA_PROJECT) " + "values(?,?)";
+				+ "(NAMA_PROJECT) values (?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
 			con = dataSource.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setInt(1, mstProject.getKodeProject());
-			ps.setString(2, mstProject.getNamaProject());
+			ps.setString(1, mstProject.getNamaProject());
 			
 			int out = ps.executeUpdate();
 			if (out != 0) {
