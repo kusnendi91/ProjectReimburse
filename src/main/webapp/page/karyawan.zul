@@ -5,18 +5,12 @@
 		viewModel="@id('vm') @init('vmd.karyawanVmd')">
 
 		<hlayout>
-			<button label="add" image="/imgs/Preview_16x16.png"
+			<button label="add" image="/imgs/plus.png"
 				hoverImage="/imgs/Check_16x16.png" height="30px"
 				onClick="@command('addEmployee')" />
-			<button label="edit" image="/imgs/Check_16x16.png"
-				hoverImage="/imgs/Save_16x16.png" height="30px"
-				onClick="@command('editEmployee')" />
-			<button label="delete" image="/imgs/Cancel_16x16.png"
-				hoverImage="/imgs/Delete_16x16.png" height="30px"
-				onClick="@command('deleteEmployee')" />
 		</hlayout>
 		<div style="text-align:right">
-			<label value="Cari" />
+			<image src="./Icon/Search_16x16.png" />
 			<textbox value="@bind(vm.search)" onOK="@command('search')" />
 		</div>
 		<space />
@@ -27,12 +21,13 @@
 
 			<listhead>
 				<listheader label="NIK" sort="auto" width="100px" />
-				<listheader label="Nama Karyawan" width="300px" />
+				<listheader label="Nama Karyawan" width="200px" />
 				<listheader label="Jenis Kelamin" width="100px" />
 				<listheader label="Company" width="100px" />
 				<listheader label="Tanggal Masuk" width="100px" />
 				<listheader label="No Absen" width="100px" />
 				<listheader label="No Rekening" />
+				<listheader label="" />
 			</listhead>
 
 			<template name="model">
@@ -44,6 +39,14 @@
 					<listcell label="@load(each.tanggalMasuk)" />
 					<listcell label="@load(each.noAbsen)" />
 					<listcell label="@load(each.noRekening)" />
+					<listcell>
+						<hbox>
+							<image src="./Icon/Edit_16x16.png"
+								onClick="@command('editEmployee')" style="margin-left: 50px;" />
+							<image src="./imgs/Delete_16x16.png"
+								onClick="@command('deleteEmployee')" style="margin-left: 50px;" />
+						</hbox>
+					</listcell>
 				</listitem>
 			</template>
 		</listbox>
@@ -105,9 +108,10 @@
 						<label value="" />
 						<hlayout>
 							<button label="Save"
-								onClick="@command('save')" />
+								onClick="@command('save')" image="/imgs/Save_16x16.png"
+								hoverImage="/imgs/Check_16x16.png" />
 							<button label="End"
-								onClick="@command('back')" />
+								onClick="@command('back')" image="/imgs/Cancel_16x16.png" />
 						</hlayout>
 					</row>
 				</rows>

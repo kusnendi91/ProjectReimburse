@@ -21,11 +21,6 @@ public class HistorySvcImpl implements HistorySvc{
 	}
 
 	@Override
-	public void update(History history) {
-		historyDao.update(history);
-	}
-
-	@Override
 	public void delete(int kodeHistory) {
 		historyDao.delete(kodeHistory);
 	}

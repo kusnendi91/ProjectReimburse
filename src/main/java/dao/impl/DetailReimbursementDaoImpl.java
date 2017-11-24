@@ -35,7 +35,7 @@ public class DetailReimbursementDaoImpl implements DetailReimbursementDao {
 
 	@Override
 	public void save(DetailReimbursement detailReimbursement) {
-		String query = "INSERT INTO DETAIL_REIMBURSEMENT "
+		String query = "INSERT INTO DETAIL_REIMBURSMENT "
 				+ "(KODE_DETAIL, NIK, KODE_PROJECT, PERIODE, "
 				+ "TRANSPORT, PARKIR, KESEHATAN, BPJS, "
 				+ "REWARD_MONTHLY, REWARD_TRIWULAN, "
@@ -86,7 +86,7 @@ public class DetailReimbursementDaoImpl implements DetailReimbursementDao {
 
 	@Override
 	public void update(DetailReimbursement detailReimbursement) {
-		String query = "UPDATE DETAIL_REIMBURSEMENT SET NIK=?, KODE_PROJECT=?, "
+		String query = "UPDATE DETAIL_REIMBURSMENT SET NIK=?, KODE_PROJECT=?, "
 				+ "PERIODE=?, TRANSPORT=?, PARKIR=?, KESEHATAN=?, BPJS=?, REWARD_MONTHLY=?, "
 				+ "REWARD_TRIWULAN=?, TAXI=?, LEMBUR=?, ENTERTAIN_INTERNAL=?, ENTERTAIN_EKSTERNAL=?, "
 				+ "DESKRIPSI_OTHER=?, NILAI_OTHER=?, SUBTOTAL=?, NOTES=? "
@@ -136,7 +136,7 @@ public class DetailReimbursementDaoImpl implements DetailReimbursementDao {
 
 	@Override
 	public void delete(int kodeDetail) {
-		String query = "DELETE FROM DETAIL_REIMBURSEMENT WHERE KODE_DETAIL=?";
+		String query = "DELETE FROM DETAIL_REIMBURSMENT WHERE KODE_DETAIL=?";
 		Connection con = null;
 		PreparedStatement ps = null;
 
@@ -166,7 +166,7 @@ public class DetailReimbursementDaoImpl implements DetailReimbursementDao {
 
 	@Override
 	public List<DetailReimbursement> findAll() {
-		String query = "SELECT * FROM DETAIL_REIMBURSEMENT";
+		String query = "SELECT * FROM DETAIL_REIMBURSMENT";
 		List<DetailReimbursement> listDetail = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -232,7 +232,7 @@ public class DetailReimbursementDaoImpl implements DetailReimbursementDao {
 
 	@Override
 	public DetailReimbursement findOne(int kodeDetail) {
-		String query = "SELECT * FROM DETAIL_REIMBURSEMENT WHERE KODE_DETAIL = '"
+		String query = "SELECT * FROM DETAIL_REIMBURSMENT WHERE KODE_DETAIL = '"
 				+ kodeDetail + "'";
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -299,7 +299,7 @@ public class DetailReimbursementDaoImpl implements DetailReimbursementDao {
 		String search = ("%" + key + "%");
 
 		String query = "SELECT * "
-				+ "FROM (DETAIL_REIMBURSEMENT AS R "
+				+ "FROM (DETAIL_REIMBURSMENT AS R "
 				+ "JOIN MST_KARYAWAN AS K ON R.NIK=K.NIK) "
 				+ "JOIN MST_PROJECT AS P ON R.KODE_PROJECT=P.KODE_PROJECT "
 				+ "WHERE (NIK LIKE '"+search+"' OR NAMA LIKE '"+search+"' "

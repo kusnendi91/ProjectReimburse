@@ -34,58 +34,43 @@ public class HistoryDaoImpl implements HistoryDao {
 	@Override
 	public void save(History history) {
 		String query = "INSERT INTO HISTORY_CLAIM "
-				+ "(KODE_HISTORY, KODE_USER, KODE_DETAIL, PERIODE) "
-				+ "values(?,?,?,?)";
+				+ "(NIK, NAMA_KARYAWAN, NAMA_PROJECT, PERIODE, TRANSPORT, PARKIR, KESEHATAN, "
+				+ "BPJS, REWARD_MONTHLY, REWARD_TRIWULAN, TAXI, LEMBUR, ENTERTAIN_INTERNAL, "
+				+ "ENTERTAIN_EKSTERNAL, DESKRIPSI_OTHER, NILAI_OTHER, SUBTOTAL, NAMA_USER, "
+				+ "HISTORY_DATE, STATUS) "
+				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
 			con = dataSource.getConnection();
 			ps = con.prepareStatement(query);
 
-			ps.setInt(1, history.getKodeHistory());
-			ps.setInt(2, history.getMstUser().getKodeUser());
-			ps.setInt(3, history.getDetailReimbursement().getKodeDetail());
+			ps.setString(1, history.getNik());
+			ps.setString(2, history.getNamaKaryawan());
+			ps.setString(3, history.getNamaProject());
 			ps.setDate(4, history.getPeriode());
+			ps.setDouble(5, history.getTransport());
+			ps.setDouble(6, history.getParkir());
+			ps.setDouble(7, history.getKesehatan());
+			ps.setDouble(8, history.getBpjs());
+			ps.setDouble(9, history.getRewardMonthly());
+			ps.setDouble(10, history.getRewardTriwulan());
+			ps.setDouble(11, history.getTaxi());
+			ps.setDouble(12, history.getLembur());
+			ps.setDouble(13, history.getEntertainInternal());
+			ps.setDouble(14, history.getEntertainEksternal());
+			ps.setString(15, history.getDeskripsiOther());
+			ps.setDouble(16, history.getNilaiOther());
+			ps.setDouble(17, history.getSubtotal());
+			ps.setString(18, history.getNamaUser());
+			ps.setDate(19, history.getHistoryDate());
+			ps.setString(20, history.getStatus());
 
 			int out = ps.executeUpdate();
 			if (out != 0) {
 				System.out.println("Sukses");
 			} else {
 				System.out.println("Failed");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				ps.close();
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	@Override
-	public void update(History history) {
-		String query = "UPDATE HISTORY_CLAIM SET KODE_USER=?, KODE_DETAIL=?, PERIODE "
-				+ "where KODE_HISTORY=?";
-		Connection con = null;
-		PreparedStatement ps = null;
-
-		try {
-			con = dataSource.getConnection();
-			ps = con.prepareStatement(query);
-
-			ps.setInt(1, history.getMstUser().getKodeUser());
-			ps.setInt(2, history.getDetailReimbursement().getKodeDetail());
-			ps.setDate(3, history.getPeriode());
-			ps.setInt(4, history.getKodeHistory());
-			int out = ps.executeUpdate();
-			if (out != 0) {
-				System.out.println("Update Sukses");
-			} else {
-				System.out.println("Update Gagal");
-
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -144,20 +129,28 @@ public class HistoryDaoImpl implements HistoryDao {
 
 			while (rs.next()) {
 				History history = new History();
-				MstUser mstUser = new MstUser();
-				DetailReimbursement detailReimbursement = new DetailReimbursement();
 
 				history.setKodeHistory(rs.getInt("KODE_HISTORY"));
-
-				int kodUser = (rs.getInt("KODE_USER"));
-				mstUser = mstUserDao.findOne(kodUser);
-				history.setMstUser(mstUser);
-
-				int kodDetail = (rs.getInt("KODE_DETAIL"));
-				detailReimbursement = detailReimbursementDao.findOne(kodDetail);
-				history.setDetailReimbursement(detailReimbursement);
-
+				history.setNik(rs.getString("NIK"));
+				history.setNamaKaryawan(rs.getString("NAMA_KARYAWAN"));
+				history.setNamaProject(rs.getString("NAMA_PROJECT"));
 				history.setPeriode(rs.getDate("PERIODE"));
+				history.setTransport(rs.getDouble("TRANSPORT"));
+				history.setTransport(rs.getDouble("PARKIR"));
+				history.setTransport(rs.getDouble("KESEHATAN"));
+				history.setTransport(rs.getDouble("BPJS"));
+				history.setTransport(rs.getDouble("REWARD_MONTHLY"));
+				history.setTransport(rs.getDouble("REWARD_TRIWULAN"));
+				history.setTransport(rs.getDouble("TAXI"));
+				history.setTransport(rs.getDouble("LEMBUR"));
+				history.setTransport(rs.getDouble("ENTERTAIN_INTERNAL"));
+				history.setTransport(rs.getDouble("ENTERTAIN_EKSTERNAL"));
+				history.setDeskripsiOther(rs.getString("DESKRIPSI_OTHER"));
+				history.setNilaiOther(rs.getDouble("NILAI_OTHER"));
+				history.setNilaiOther(rs.getDouble("SUBTOTAL"));
+				history.setNamaUser(rs.getString("NAMA_USER"));
+				history.setHistoryDate(rs.getDate("HISTORY_DATE"));
+				history.setStatus(rs.getString("STATUS"));
 
 				listHistory.add(history);
 			}
@@ -184,8 +177,6 @@ public class HistoryDaoImpl implements HistoryDao {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		History history = new History();
-		MstUser mstUser = new MstUser();
-		DetailReimbursement detailReimbursement = new DetailReimbursement();
 
 		try {
 			con = dataSource.getConnection();
@@ -194,16 +185,26 @@ public class HistoryDaoImpl implements HistoryDao {
 
 			while (rs.next()) {
 				history.setKodeHistory(rs.getInt("KODE_HISTORY"));
-
-				int kodUser = (rs.getInt("KODE_USER"));
-				mstUser = mstUserDao.findOne(kodUser);
-				history.setMstUser(mstUser);
-
-				int kodDetail = (rs.getInt("KODE_DETAIL"));
-				detailReimbursement = detailReimbursementDao.findOne(kodDetail);
-				history.setDetailReimbursement(detailReimbursement);
-
+				history.setNik(rs.getString("NIK"));
+				history.setNamaKaryawan(rs.getString("NAMA_KARYAWAN"));
+				history.setNamaProject(rs.getString("NAMA_PROJECT"));
 				history.setPeriode(rs.getDate("PERIODE"));
+				history.setTransport(rs.getDouble("TRANSPORT"));
+				history.setTransport(rs.getDouble("PARKIR"));
+				history.setTransport(rs.getDouble("KESEHATAN"));
+				history.setTransport(rs.getDouble("BPJS"));
+				history.setTransport(rs.getDouble("REWARD_MONTHLY"));
+				history.setTransport(rs.getDouble("REWARD_TRIWULAN"));
+				history.setTransport(rs.getDouble("TAXI"));
+				history.setTransport(rs.getDouble("LEMBUR"));
+				history.setTransport(rs.getDouble("ENTERTAIN_INTERNAL"));
+				history.setTransport(rs.getDouble("ENTERTAIN_EKSTERNAL"));
+				history.setDeskripsiOther(rs.getString("DESKRIPSI_OTHER"));
+				history.setNilaiOther(rs.getDouble("NILAI_OTHER"));
+				history.setNilaiOther(rs.getDouble("SUBTOTAL"));
+				history.setNamaUser(rs.getString("NAMA_USER"));
+				history.setHistoryDate(rs.getDate("HISTORY_DATE"));
+				history.setStatus(rs.getString("STATUS"));
 			}
 
 		} catch (SQLException e) {
@@ -224,12 +225,11 @@ public class HistoryDaoImpl implements HistoryDao {
 	public List<History> searchData(String key) {
 		String search = ("%" + key + "%");
 
-		String query = "SELECT * "
-				+ "FROM (HISTORY_CLAIM AS C JOIN MST_USER AS U ON C.KODE_USER=U.KODE_USER) JOIN DETAIL_REIMBURSEMENT AS R ON C.KODE_DETAIL=R.KODE_DETAIL "
-				+ "WHERE (KODE_HISTORY LIKE '" + search
-				+ "' OR U.KODE_USER LIKE '" + search
-				+ "' OR R.KODE_DETAIL LIKE '" + search + "' OR PERIODE LIKE '"
-				+ search + "')";
+		String query = "SELECT * " + "FROM HISTORY_CLAIM "
+				+ "WHERE (KODE_HISTORY LIKE '" + search + "' OR NIK LIKE '"
+				+ search + "' OR NAMA_KARYAWAN LIKE '" + search
+				+ "' OR PERIODE LIKE '" + search + "' OR NAMA_PROJECT LIKE '"
+				+ search + "' OR NAMA_USER LIKE '" + search + "' OR STATUS LIKE '" + search + "')";
 
 		List<History> listHistory = new ArrayList<>();
 
@@ -244,20 +244,28 @@ public class HistoryDaoImpl implements HistoryDao {
 
 			while (rs.next()) {
 				History history = new History();
-				MstUser mstUser = new MstUser();
-				DetailReimbursement detailReimbursement = new DetailReimbursement();
 
 				history.setKodeHistory(rs.getInt("KODE_HISTORY"));
-
-				int kodUser = (rs.getInt("KODE_USER"));
-				mstUser = mstUserDao.findOne(kodUser);
-				history.setMstUser(mstUser);
-
-				int kodDetail = (rs.getInt("KODE_DETAIL"));
-				detailReimbursement = detailReimbursementDao.findOne(kodDetail);
-				history.setDetailReimbursement(detailReimbursement);
-
+				history.setNik(rs.getString("NIK"));
+				history.setNamaKaryawan(rs.getString("NAMA_KARYAWAN"));
+				history.setNamaProject(rs.getString("NAMA_PROJECT"));
 				history.setPeriode(rs.getDate("PERIODE"));
+				history.setTransport(rs.getDouble("TRANSPORT"));
+				history.setTransport(rs.getDouble("PARKIR"));
+				history.setTransport(rs.getDouble("KESEHATAN"));
+				history.setTransport(rs.getDouble("BPJS"));
+				history.setTransport(rs.getDouble("REWARD_MONTHLY"));
+				history.setTransport(rs.getDouble("REWARD_TRIWULAN"));
+				history.setTransport(rs.getDouble("TAXI"));
+				history.setTransport(rs.getDouble("LEMBUR"));
+				history.setTransport(rs.getDouble("ENTERTAIN_INTERNAL"));
+				history.setTransport(rs.getDouble("ENTERTAIN_EKSTERNAL"));
+				history.setDeskripsiOther(rs.getString("DESKRIPSI_OTHER"));
+				history.setNilaiOther(rs.getDouble("NILAI_OTHER"));
+				history.setNilaiOther(rs.getDouble("SUBTOTAL"));
+				history.setNamaUser(rs.getString("NAMA_USER"));
+				history.setHistoryDate(rs.getDate("HISTORY_DATE"));
+				history.setStatus(rs.getString("STATUS"));
 
 				listHistory.add(history);
 			}
