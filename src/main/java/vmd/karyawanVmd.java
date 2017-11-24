@@ -183,13 +183,13 @@ public class karyawanVmd {
 				if (mstKaryawan.getCompany().equals("IGT") || 
 						(mstKaryawan.getCompany().equals("IMK")) || 
 						(mstKaryawan.getCompany().equals("ICN")) || 
-						(mstKaryawan.getCompany().equals("SBY"))) {
+						(mstKaryawan.getCompany().equals("IDS"))) {
 							mstKaryawanSvc.save(mstKaryawan);
 							Clients.showNotification("Data berhasil disimpan",
 									Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
 							setStatusPopUp(false);
-							mstKaryawan = null;
 							setStatusPopUp(true);
+							add();
 				} else {
 					Messagebox.show("ERROR! Inputan status tidak sesuai! Cek kembali inputan.");
 				}
@@ -197,7 +197,7 @@ public class karyawanVmd {
 				if (mstKaryawan.getCompany().equals("IGT") || 
 						(mstKaryawan.getCompany().equals("IMK")) || 
 						(mstKaryawan.getCompany().equals("ICN")) || 
-						(mstKaryawan.getCompany().equals("SBY"))) {
+						(mstKaryawan.getCompany().equals("IDS"))) {
 							mstKaryawanSvc.update(mstKaryawan);
 							Clients.showNotification("Data berhasil diupdate",
 									Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
