@@ -35,36 +35,35 @@ public class DetailReimbursementDaoImpl implements DetailReimbursementDao {
 
 	@Override
 	public void save(DetailReimbursement detailReimbursement) {
-		String query = "INSERT INTO DETAIL_REIMBURSEMENT "
-				+ "(KODE_DETAIL, NIK, KODE_PROJECT, PERIODE, "
+		String query = "INSERT INTO DETAIL_REIMBURSMENT "
+				+ "(NIK, KODE_PROJECT, PERIODE, "
 				+ "TRANSPORT, PARKIR, KESEHATAN, BPJS, "
 				+ "REWARD_MONTHLY, REWARD_TRIWULAN, "
 				+ "TAXI, LEMBUR, ENTERTAIN_INTERNAL, ENTERTAIN_EKSTERNAL, "
 				+ "DESKRIPSI_OTHER, NILAI_OTHER, SUBTOTAL, NOTES) "
-				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
 			con = dataSource.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setInt(1, detailReimbursement.getKodeDetail());
-			ps.setString(2, detailReimbursement.getMstKaryawan().getNik());
-			ps.setInt(3, detailReimbursement.getMstProject().getKodeProject());
-			ps.setDate(4, detailReimbursement.getPeriode());
-			ps.setDouble(5, detailReimbursement.getTransport());
-			ps.setDouble(6, detailReimbursement.getParkir());
-			ps.setDouble(7, detailReimbursement.getKesehatan());
-			ps.setDouble(8, detailReimbursement.getBpjs());
-			ps.setDouble(9, detailReimbursement.getRewardMonthly());
-			ps.setDouble(10, detailReimbursement.getRewardTriwulan());
-			ps.setDouble(11, detailReimbursement.getTaxi());
-			ps.setDouble(12, detailReimbursement.getLembur());
-			ps.setDouble(13, detailReimbursement.getEntertainInternal());
-			ps.setDouble(14, detailReimbursement.getEntertainEksternal());
-			ps.setString(15, detailReimbursement.getDeskripsiOther());
-			ps.setDouble(16, detailReimbursement.getNilaiOther());
-			ps.setDouble(17, detailReimbursement.getSubtotal());
-			ps.setString(18, detailReimbursement.getNotes());
+			ps.setString(1, detailReimbursement.getMstKaryawan().getNik());
+			ps.setInt(2, detailReimbursement.getMstProject().getKodeProject());
+			ps.setDate(3, detailReimbursement.getPeriode());
+			ps.setDouble(4, detailReimbursement.getTransport());
+			ps.setDouble(5, detailReimbursement.getParkir());
+			ps.setDouble(6, detailReimbursement.getKesehatan());
+			ps.setDouble(7, detailReimbursement.getBpjs());
+			ps.setDouble(8, detailReimbursement.getRewardMonthly());
+			ps.setDouble(9, detailReimbursement.getRewardTriwulan());
+			ps.setDouble(10, detailReimbursement.getTaxi());
+			ps.setDouble(11, detailReimbursement.getLembur());
+			ps.setDouble(12, detailReimbursement.getEntertainInternal());
+			ps.setDouble(13, detailReimbursement.getEntertainEksternal());
+			ps.setString(14, detailReimbursement.getDeskripsiOther());
+			ps.setDouble(15, detailReimbursement.getNilaiOther());
+			ps.setDouble(16, detailReimbursement.getSubtotal());
+			ps.setString(17, detailReimbursement.getNotes());
 
 			int out = ps.executeUpdate();
 			if (out != 0) {
@@ -86,7 +85,7 @@ public class DetailReimbursementDaoImpl implements DetailReimbursementDao {
 
 	@Override
 	public void update(DetailReimbursement detailReimbursement) {
-		String query = "UPDATE DETAIL_REIMBURSEMENT SET NIK=?, KODE_PROJECT=?, "
+		String query = "UPDATE DETAIL_REIMBURSMENT SET NIK=?, KODE_PROJECT=?, "
 				+ "PERIODE=?, TRANSPORT=?, PARKIR=?, KESEHATAN=?, BPJS=?, REWARD_MONTHLY=?, "
 				+ "REWARD_TRIWULAN=?, TAXI=?, LEMBUR=?, ENTERTAIN_INTERNAL=?, ENTERTAIN_EKSTERNAL=?, "
 				+ "DESKRIPSI_OTHER=?, NILAI_OTHER=?, SUBTOTAL=?, NOTES=? "
@@ -136,7 +135,7 @@ public class DetailReimbursementDaoImpl implements DetailReimbursementDao {
 
 	@Override
 	public void delete(int kodeDetail) {
-		String query = "DELETE FROM DETAIL_REIMBURSEMENT WHERE KODE_DETAIL=?";
+		String query = "DELETE FROM DETAIL_REIMBURSMENT WHERE KODE_DETAIL=?";
 		Connection con = null;
 		PreparedStatement ps = null;
 
@@ -166,7 +165,7 @@ public class DetailReimbursementDaoImpl implements DetailReimbursementDao {
 
 	@Override
 	public List<DetailReimbursement> findAll() {
-		String query = "SELECT * FROM DETAIL_REIMBURSEMENT";
+		String query = "SELECT * FROM DETAIL_REIMBURSMENT";
 		List<DetailReimbursement> listDetail = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -232,7 +231,7 @@ public class DetailReimbursementDaoImpl implements DetailReimbursementDao {
 
 	@Override
 	public DetailReimbursement findOne(int kodeDetail) {
-		String query = "SELECT * FROM DETAIL_REIMBURSEMENT WHERE KODE_DETAIL = '"
+		String query = "SELECT * FROM DETAIL_REIMBURSMENT WHERE KODE_DETAIL = '"
 				+ kodeDetail + "'";
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -298,8 +297,8 @@ public class DetailReimbursementDaoImpl implements DetailReimbursementDao {
 	public List<DetailReimbursement> searchData(String key) {
 		String search = ("%" + key + "%");
 
-		String query = "SELECT * "
-				+ "FROM (DETAIL_REIMBURSEMENT AS R "
+		String query = "SELECT R.* "
+				+ "FROM (DETAIL_REIMBURSMENT AS R "
 				+ "JOIN MST_KARYAWAN AS K ON R.NIK=K.NIK) "
 				+ "JOIN MST_PROJECT AS P ON R.KODE_PROJECT=P.KODE_PROJECT "
 				+ "WHERE (NIK LIKE '"+search+"' OR NAMA LIKE '"+search+"' "

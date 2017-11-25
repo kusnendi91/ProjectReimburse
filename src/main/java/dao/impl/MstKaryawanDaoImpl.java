@@ -125,7 +125,7 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 
 	@Override
 	public List<MstKaryawan> findAll() {
-		String query = "SELECT * FROM MST_KARYAWAN";
+		String query = "SELECT * FROM MST_KARYAWAN ORDER BY NAMA ASC";
 		List<MstKaryawan> listKaryawan = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement ps = null;

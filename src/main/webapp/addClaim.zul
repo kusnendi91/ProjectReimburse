@@ -1,0 +1,188 @@
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Add Klaim" border="normal"
+			vflex="1" hflex="1" apply="org.zkoss.bind.BindComposer"
+			viewModel="@id('vm') @init('vmd.DetailReimbursementVmd')" >
+
+		<groupbox>
+			<caption>Add Claim</caption>
+			<grid>
+				<columns>
+					<column label="" width="10%" align="right"/>
+					<column label="" width="23%" />
+					<column label="" width="57%" />
+				</columns>
+				<rows>
+
+					<row>
+						<label value="Periode : " width="10px"/>
+						<hbox>
+							
+			<combobox
+						value="@load(vm.bulan2) @save(vm.bulan)" 
+						constraint="no empty : wajib diisi">
+						<comboitem label="January" value="1" />
+						<comboitem label="February" value="2" />
+						<comboitem label="March" value="3" />
+						<comboitem label="April" value="4" />
+						<comboitem label="May" value="5" />
+						<comboitem label="June" value="6" />
+						<comboitem label="July" value="7" />
+						<comboitem label="August" value="8" />
+						<comboitem label="September" value="9" />
+						<comboitem label="October" value="10" />
+						<comboitem label="November" value="11" />
+						<comboitem label="December" value="12" />
+					</combobox>				
+							Tahun : 
+							<textbox value="@load(vm.tahun2) @save(vmd.tahun)" width="50px"> </textbox>
+						</hbox>
+					</row>
+					<row>
+						<label value="Nama Karyawan : " />
+						<combobox width="150px" tabindex="3" model="@load(vm.listKaryawan)"
+						selectedItem="@bind(vm.mstKaryawan)" onChange="@command('findNik')" >
+						<template name="model">
+						<comboitem 
+						label="@load(each.namaKaryawan)"
+						value="@load(each.nik)"/>
+						</template>	
+						</combobox>
+					</row>
+					<row>
+						<label value="NIK : " />
+						<textbox value="@bind(vm.nik)" readonly="true" width="150px"/>
+					</row>
+					<row>
+						<label value="No Rekening : " />
+						<textbox value="@bind(vm.rek)" readonly="true" width="150px"/>
+					</row>
+					<row>
+						<label value="Project : "/>
+						<combobox width="150px"
+							tabindex="4" model="@bind(vm.listProject)" selectedItem="@bind(vm.mstProject)">
+						<template name="model">
+						<comboitem label="@load(each.namaProject)" value="@bind(each.kodeProject)" />
+						</template>
+						</combobox>
+						
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+		<groupbox>
+		<hbox spacing="0" width="100%" height="100%">
+			<groupbox>
+				<caption>Input Detail Claim</caption>
+				<grid>
+					<columns>
+						<column label="" width="8%" align="right" />
+						<column label="" width="15%" />
+						<column label="" width="12%" align="right" />
+						<column label="" width="15%" />
+					</columns>
+					<rows>
+						<row>
+							<label value="Transport : " />
+							<doublebox format=",###.#" width="130px"
+								style="text-align:right;" value="@bind(vm.detailReimbursement.transport)" tabindex="5" />
+							<label value="Reward Monthly : " />
+							<doublebox format=",###.#" width="130px"
+								style="text-align:right;" value="@bind(vm.detailReimbursement.rewardMonthly)" tabindex="11" />
+						</row>
+						<row>
+							<label value="Parkir : " />
+							<doublebox format=",###.#" width="130px"
+								style="text-align:right;" tabindex="6" value="@bind(vm.detailReimbursement.parkir)" />
+							<label value="Reward Triwulan : " />
+							<doublebox format=",###.#" width="130px"
+								style="text-align:right;" tabindex="12" value="@bind(vm.detailReimbursement.rewardTriwulan)" />
+						</row>
+						<row>
+							<label value="Kesehatan : " />
+							<doublebox format=",###.#" width="130px"
+								style="text-align:right;" tabindex="7" value="@bind(vm.detailReimbursement.kesehatan)"/>
+							<label value="Entertain Internal : " />
+							<doublebox format=",###.#" width="130px"
+								style="text-align:right;" tabindex="13" value="@bind(vm.detailReimbursement.entertainInternal)"/>
+						</row>
+						<row>
+							<label value="BPJS Kes : " />
+							<doublebox format=",###.#" width="130px"
+								style="text-align:right;" tabindex="8" value="@bind(vm.detailReimbursement.bpjs)"/>
+							<label value="Entertain External : " />
+							<doublebox format=",###.#" width="130px"
+								style="text-align:right;" tabindex="14" value="@bind(vm.detailReimbursement.entertainEksternal)"/>
+						</row>
+						<row>
+							<label value="Taxi : " />
+							<doublebox format=",###.#" width="130px"
+								style="text-align:right;" tabindex="9" value="@bind(vm.detailReimbursement.taxi)"/>
+							<label value="SubTotal : " />
+							<doublebox format=",###.#" width="130px" readonly="true"
+								style="text-align:right;" tabindex="15" maxlength="11" value="@bind(vm.detailReimbursement.subtotal)"/>
+						</row>
+						<row>
+							<label value="Lembur : " />
+							<doublebox format=",###.#" width="130px"
+								style="text-align:right;" tabindex="10" value="@bind(vm.detailReimbursement.lembur)"/>
+							
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+			<splitter id="s2" />
+			<vlayout>
+				<groupbox>
+					<caption>Add Other Claim</caption>
+					<grid>
+						<columns>
+							<column width="10%"/>
+							<column width="20%"/>
+						</columns>
+						<rows>
+							<row>
+								<label value="Tipe Claim : " />
+								<label value="Nominal : " />
+							</row>
+							<row>
+								<textbox width="150px" tabindex="16" value="@bind(vm.detailReimbursement.deskripsiOther)"/>
+								<doublebox format=",###.#" width="130px"
+									style="text-align:right;" tabindex="17" value="@bind(vm.detailReimbursement.nilaiOther)"/>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+				<groupbox>
+					<caption>Add Note</caption>
+				<grid>
+					<columns>
+						<column width="7%"/>
+						<column width="50%"/>
+					</columns>
+					<rows>
+						<row>
+							<label value="Note : " />
+							<textbox rows="5" cols="40" tabindex="18" value="@bind(vm.detailReimbursement.notes)"></textbox>
+						</row>
+					</rows>
+				</grid>
+				</groupbox>
+			</vlayout>
+		</hbox>
+		<vlayout>
+			<groupbox>
+				<space />
+				<button label="Save" onClick="@command('save')" tabindex="19"/>
+				<space />
+				<button label="Next Project" onClick="@command('NextProject')" tabindex="20"/>
+				<space />
+				<button label="Next Karyawan" tabindex="21"/>
+				<space />
+			</groupbox>
+		</vlayout>
+		</groupbox>
+	</window>
+	
+	
+</zk>

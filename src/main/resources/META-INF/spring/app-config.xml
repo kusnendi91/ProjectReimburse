@@ -36,7 +36,7 @@
 		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
 		<property name="url" value="jdbc:sqlserver://Localhost;databaseName=DB_REIMBURSE" />
 		<property name="username" value="sa" />
-		<property name="password" value="indocyber" />
+		<property name="password" value="123" />
 	</bean>
 
 

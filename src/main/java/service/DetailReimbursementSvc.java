@@ -11,4 +11,6 @@ public interface DetailReimbursementSvc {
 	public List<DetailReimbursement> findAll();
 	public DetailReimbursement findOne(int kodeDetail);
 	public List<DetailReimbursement> searchData(String key);
+	public DetailReimbursement findByDateNameAndKlaim(String nik, int kodeProject, int m, int y);
+	
 }
