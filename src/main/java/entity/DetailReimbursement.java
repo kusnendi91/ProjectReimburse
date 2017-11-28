@@ -2,7 +2,7 @@ package entity;
 
 import java.sql.Date;
 
-public class DetailReimbursement {
+public class DetailReimbursement implements Comparable<DetailReimbursement>{
 	private int kodeDetail;
 	private MstKaryawan mstKaryawan;
 	private Date periode;
@@ -130,6 +130,10 @@ public class DetailReimbursement {
 	}
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+	@Override
+	public int compareTo(DetailReimbursement o) {
+		return this.mstKaryawan.getNamaKaryawan().compareTo(o.mstKaryawan.getNamaKaryawan());
 	}
 	
 	

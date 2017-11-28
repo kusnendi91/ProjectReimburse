@@ -6,6 +6,7 @@ import entity.MstKaryawan;
 
 public interface MstKaryawanSvc {
 	public List<MstKaryawan> findAllData();
+	public List<MstKaryawan> findAllNotUser();
 	public void save (MstKaryawan mstKaryawan);
 	public void update (MstKaryawan mstKaryawan);
 	public void delete (String nikKaryawan);

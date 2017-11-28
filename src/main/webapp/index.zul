@@ -2,7 +2,7 @@
 <?link rel="stylesheet" type="text/css" href="/css/style.css"?>
 <?link rel="shortcut icon" type="image/x-icon" href="./imgs/logo.png"?>
 <?link rel="icon" type="image/x-icon" href="./imgs/logo.png"?>
-<?init class="org.zkoss.zk.ui.util.Composition" arg0="/layout/template.zul" ?>
+<?init class="org.zkoss.zk.ui.util.Composition" arg0="/template.zul" ?>
 <?page id="index" title="IGLO Employee Reimburse" ?>
 <zk>
 	<include id="mainInclude" mode="instant" self="@define(mainContent)"

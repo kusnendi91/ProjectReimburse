@@ -45,4 +45,9 @@ public class MstKaryawanSvcImpl implements MstKaryawanSvc{
 		return mstKaryawanDao.searchData(key);
 	}
 
+	@Override
+	public List<MstKaryawan> findAllNotUser() {
+		return mstKaryawanDao.findAllNotUser();
+	}
+
 }

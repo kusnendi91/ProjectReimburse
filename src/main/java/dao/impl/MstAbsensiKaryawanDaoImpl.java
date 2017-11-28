@@ -29,23 +29,23 @@ public class MstAbsensiKaryawanDaoImpl implements MstAbsensiKaryawanDao {
 	@Override
 	public void save(MstAbsensiKaryawan mstAbsensiKaryawan) {
 		String query = "INSERT INTO MST_ABSENSI_KARYAWAN "
-				+ "(KODE_ABSEN, NO_ABSEN, KANTOR, KLIEN, SAKIT_SURAT, SAKIT_CUTI, CUTI, CUTI_DITANGGUNG, MANGKIR, PERIODE) "
-				+ "values(?,?,?,?,?,?,?,?,?,?)";
+				+ "(NO_ABSEN, KANTOR, KLIEN, SAKIT_SURAT, SAKIT_CUTI, CUTI, CUTI_DITANGGUNG, MANGKIR, PERIODE) "
+				+ "values(?,?,?,?,?,?,?,?,?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
 			con = dataSource.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setInt(1, mstAbsensiKaryawan.getKodeAbsen());
-			ps.setString(2, mstAbsensiKaryawan.getMstKaryawan().getNoAbsen());
-			ps.setInt(3, mstAbsensiKaryawan.getKantor());
-			ps.setInt(4, mstAbsensiKaryawan.getKlien());
-			ps.setInt(5, mstAbsensiKaryawan.getSakitSuratDokter());
-			ps.setInt(6, mstAbsensiKaryawan.getSakitPotongCuti());
-			ps.setInt(7, mstAbsensiKaryawan.getCuti());
-			ps.setInt(8, mstAbsensiKaryawan.getCutiDitanggung());
-			ps.setInt(9, mstAbsensiKaryawan.getMangkir());
-			ps.setDate(10, mstAbsensiKaryawan.getPeriode());
+			//ps.setInt(1, mstAbsensiKaryawan.getKodeAbsen());
+			ps.setString(1, mstAbsensiKaryawan.getMstKaryawan().getNoAbsen());
+			ps.setInt(2, mstAbsensiKaryawan.getKantor());
+			ps.setInt(3, mstAbsensiKaryawan.getKlien());
+			ps.setInt(4, mstAbsensiKaryawan.getSakitSuratDokter());
+			ps.setInt(5, mstAbsensiKaryawan.getSakitPotongCuti());
+			ps.setInt(6, mstAbsensiKaryawan.getCuti());
+			ps.setInt(7, mstAbsensiKaryawan.getCutiDitanggung());
+			ps.setInt(8, mstAbsensiKaryawan.getMangkir());
+			ps.setDate(9, mstAbsensiKaryawan.getPeriode());
 
 			int out = ps.executeUpdate();
 			if (out != 0) {
@@ -67,24 +67,24 @@ public class MstAbsensiKaryawanDaoImpl implements MstAbsensiKaryawanDao {
 
 	@Override
 	public void update(MstAbsensiKaryawan mstAbsensiKaryawan) {
-		String query = "UPDATE MST_ABSENSI_KARYAWAN SET NO_ABSEN=?, KANTOR=?, KLIEN=?, "
+		String query = "UPDATE MST_ABSENSI_KARYAWAN SET KANTOR=?, KLIEN=?, "
 				+ "SAKIT_SURAT=?, SAKIT_CUTI=?, CUTI=?, CUTI_DITANGGUNG=?, MANGKIR=?, PERIODE=? "
-				+ "where KODE_ABSEN=?";
+				+ "where NO_ABSEN = ?";
 		Connection con = null;
 		PreparedStatement ps = null;
 
 		try {
 			con = dataSource.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setString(1, mstAbsensiKaryawan.getMstKaryawan().getNoAbsen());
-			ps.setInt(2, mstAbsensiKaryawan.getKantor());
-			ps.setInt(3, mstAbsensiKaryawan.getKlien());
-			ps.setInt(4, mstAbsensiKaryawan.getSakitSuratDokter());
-			ps.setInt(5, mstAbsensiKaryawan.getSakitPotongCuti());
+			ps.setInt(1, mstAbsensiKaryawan.getKantor());
+			ps.setInt(2, mstAbsensiKaryawan.getKlien());
+			ps.setInt(3, mstAbsensiKaryawan.getSakitSuratDokter());
+			ps.setInt(4, mstAbsensiKaryawan.getSakitPotongCuti());
+			ps.setInt(5, mstAbsensiKaryawan.getCuti());
 			ps.setInt(6, mstAbsensiKaryawan.getCutiDitanggung());
 			ps.setInt(7, mstAbsensiKaryawan.getMangkir());
 			ps.setDate(8, mstAbsensiKaryawan.getPeriode());
-			ps.setInt(9, mstAbsensiKaryawan.getKodeAbsen());
+			ps.setString(9, mstAbsensiKaryawan.getMstKaryawan().getNoAbsen());
 			int out = ps.executeUpdate();
 			if (out != 0) {
 				System.out.println("Update Sukses");
@@ -286,6 +286,54 @@ public class MstAbsensiKaryawanDaoImpl implements MstAbsensiKaryawanDao {
 			}
 		}
 		return listAbsensi;
+	}
+
+	@Override
+	public MstAbsensiKaryawan findByPeriode(String noAbsen, int m, int y) {
+			String query = "SELECT * FROM MST_ABSENSI_KARYAWAN "
+					     + "WHERE NO_ABSEN ='"+noAbsen+"' AND Month(PERIODE)='"+m+"' AND Year(PERIODE)='"+y+"' ";
+					
+			Connection con = null;
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			MstAbsensiKaryawan mstAbsensiKaryawan = new MstAbsensiKaryawan();
+			MstKaryawan mstKaryawan = new MstKaryawan();
+
+			try {
+				con = dataSource.getConnection();
+				ps = con.prepareStatement(query);
+				rs = ps.executeQuery();
+
+				while (rs.next()) {
+					mstAbsensiKaryawan.setKodeAbsen(rs.getInt("KODE_ABSEN"));
+					String noAbsens = (rs.getString("NO_ABSEN"));
+					mstKaryawan = mstKaryawanDao.findOneAbsen(noAbsens);
+					mstAbsensiKaryawan.setMstKaryawan(mstKaryawan);
+
+					mstAbsensiKaryawan.setKantor(rs.getInt("KANTOR"));
+					mstAbsensiKaryawan.setKlien(rs.getInt("KLIEN"));
+					mstAbsensiKaryawan
+							.setSakitSuratDokter(rs.getInt("SAKIT_SURAT"));
+					mstAbsensiKaryawan.setSakitPotongCuti(rs.getInt("SAKIT_CUTI"));
+					mstAbsensiKaryawan.setCuti(rs.getInt("CUTI"));
+					mstAbsensiKaryawan.setCutiDitanggung(rs
+							.getInt("CUTI_DITANGGUNG"));
+					mstAbsensiKaryawan.setMangkir(rs.getInt("MANGKIR"));
+					mstAbsensiKaryawan.setPeriode(rs.getDate("PERIODE"));
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					ps.close();
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+			return mstAbsensiKaryawan;
 	}
 
 }

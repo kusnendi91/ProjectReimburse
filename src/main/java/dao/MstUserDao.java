@@ -11,4 +11,5 @@ public interface MstUserDao {
 	public List<MstUser> findAll();
 	public MstUser findOne(int kodeUser);
 	public List<MstUser> searchData(String key);
+	public MstUser findByUsernameAndPassword(String username, String password);
 }

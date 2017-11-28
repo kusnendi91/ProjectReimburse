@@ -8,7 +8,8 @@ public interface MstUserSvc {
 	public void save(MstUser mstUser);
 	public void update(MstUser mstUser);
 	public void delete(int kodeUser);
-	public List<MstUser> findAll();
+	public List<MstUser> findAll(); 
 	public MstUser findOne(int kodeUser);
 	public List<MstUser> searchData(String key);
+	public MstUser login(String username, String password);
 }

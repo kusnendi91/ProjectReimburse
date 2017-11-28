@@ -1,8 +1,21 @@
-<div hflex="1" vflex="1" sclass="footer">
-	<vbox hflex="1" vflex="1" align="center">
-		Indocyber an IT Company
-		<a href="http://www.indocyber.co.id">
-			http://www.indocyber.co.id
-		</a>
-	</vbox>
-</div>
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<style>
+		.footerstyle{
+			background-color : #B22222;
+			
+			
+		}
+		.labelstyle {
+			font-weight: bold;
+			color: 	white;
+			font-size : 13px;
+		}
+</style>
+<div hflex="1" vflex="1" sclass="footerstyle">
+		<vbox hflex="1" vflex="1" align="center">
+			<label value="PT Indocyber Global Teknologi" sclass="labelstyle"/>
+			<a href="http://www.indocyber.co.id" sclass="labelstyle">http://www.indocyber.co.id</a>
+		</vbox>
+	</div>
+</zk>

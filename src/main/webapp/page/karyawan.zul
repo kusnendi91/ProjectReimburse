@@ -1,8 +1,15 @@
 <?page title="Employee Management" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<window title="Employee Management" border="normal"
-		apply="org.zkoss.bind.BindComposer"
+		sclass="windowcolorstyle" apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('vmd.karyawanVmd')">
+
+		<caption label="Data Employee" style="color:white; font-weight:bold;"></caption>
+		<style>
+			.windowcolorstyle{
+				background-color:#911f1f;
+			}
+		</style>
 
 		<hlayout>
 			<button label="add" image="/imgs/plus.png"
@@ -10,24 +17,24 @@
 				onClick="@command('addEmployee')" />
 		</hlayout>
 		<div style="text-align:right">
-			<image src="./Icon/Search_16x16.png" />
-			<textbox value="@bind(vm.search)" onOK="@command('search')" />
+			<image src="/Icon/Search_16x16.png" />
+			<textbox value="@bind(vm.search)" onOK="@command('search')" onFocus="@command('isiSearch')"/>
 		</div>
 		<space />
 
 		<listbox model="@load(vm.listKaryawan)"
 			selectedItem="@bind(vm.mstKaryawan)" mold="paging"
-			pagingPosition="bottom" pageSize="10">
+			pagingPosition="bottom" pageSize="10" emptyMessage="No Rows Found">
 
 			<listhead>
-				<listheader label="NIK" sort="auto" width="100px" />
-				<listheader label="Nama Karyawan" width="200px" />
-				<listheader label="Jenis Kelamin" width="100px" />
-				<listheader label="Company" width="100px" />
-				<listheader label="Tanggal Masuk" width="100px" />
-				<listheader label="No Absen" width="100px" />
-				<listheader label="No Rekening" />
-				<listheader label="" />
+				<listheader label="NIK" sort="auto" width="100px" align="center"/>
+				<listheader label="Nama Karyawan" width="300px" align="center"/>
+				<listheader label="Jenis Kelamin" width="100px" align="center"/>
+				<listheader label="Company" width="100px" align="center"/>
+				<listheader label="Tanggal Masuk" width="100px" align="center"/>
+				<listheader label="No Absen" width="100px" align="center"/>
+				<listheader label="No Rekening" width="120px" align="center"/>
+				<listheader label="Edit / Delete" align="center"/>
 			</listhead>
 
 			<template name="model">
@@ -41,10 +48,10 @@
 					<listcell label="@load(each.noRekening)" />
 					<listcell>
 						<hbox>
-							<image src="./Icon/Edit_16x16.png"
-								onClick="@command('editEmployee')" style="margin-left: 50px;" />
-							<image src="./imgs/Delete_16x16.png"
-								onClick="@command('deleteEmployee')" style="margin-left: 50px;" />
+							<image src="/imgs/edit.png"
+								onClick="@command('editEmployee')" style="margin-left: 70px;" />
+							<image src="/imgs/Delete_16x16.png"
+								onClick="@command('deleteEmployee')" style="margin-left: 20px;" />
 						</hbox>
 					</listcell>
 				</listitem>
@@ -54,7 +61,8 @@
 			visible="@bind(vm.statusPopUp)" width="400px" height="330px"
 			mode="modal" contentStyle="overflow:auto"
 			style="-webkit-box-shadow: 1px 1px 10px 3px #969696; 
-   						   box-shadow: 1px 1px 10px 3px #969696;">
+   						   box-shadow: 1px 1px 10px 3px #969696;"
+			xmlns:w="client">
 			<grid>
 				<columns>
 					<column label="" width="150px" />
@@ -63,8 +71,29 @@
 				<rows>
 					<row>
 						<label value="NIK" />
-						<textbox constraint="no empty : NIK harus diisi"
-							value="@bind(vm.mstKaryawan.nik)" disabled="@load(vm.disable)" />
+						<textbox
+							constraint="no empty : NIK harus diisi!" maxlength="20"
+							value="@bind(vm.mstKaryawan.nik)" disabled="@load(vm.disable)">
+							<attribute w:name="doKeyPress_">
+
+
+
+
+
+
+								
+								<![CDATA[ function(evt) { if
+								(!this._shallIgnore(evt, "0123456789"))
+								this.$doKeyPress_(evt); } ]]>
+								
+								
+								
+								
+								
+								
+								
+							</attribute>
+						</textbox>
 					</row>
 					<row>
 						<label value="Nama Karyawan" />
@@ -75,8 +104,7 @@
 					<row>
 						<label value="Jenis Kelamin" />
 						<textbox
-							value="@bind(vm.mstKaryawan.jenisKelamin)"
-							onChange="@command('cekIsi')" />
+							value="@bind(vm.mstKaryawan.jenisKelamin)" />
 					</row>
 					<row>
 						<label value="Company" />
@@ -97,13 +125,47 @@
 					<row>
 						<label value="No Absen" />
 						<textbox value="@bind(vm.mstKaryawan.noAbsen)"
-							constraint="no empty : No Absen harus diisi" />
+							constraint="no empty : No Absen harus diisi">
+							<attribute w:name="doKeyPress_">
+
+
+
+
+
+								
+								<![CDATA[ function(evt) { if
+								(!this._shallIgnore(evt, "0123456789"))
+								this.$doKeyPress_(evt); } ]]>
+								
+								
+								
+								
+								
+								
+							</attribute>
+						</textbox>
 					</row>
 
 					<row>
 						<label value="No Rekening" />
 						<textbox
-							value="@bind(vm.mstKaryawan.noRekening)" />
+							value="@bind(vm.mstKaryawan.noRekening)">
+							<attribute w:name="doKeyPress_">
+
+
+
+
+								
+								<![CDATA[ function(evt) { if
+								(!this._shallIgnore(evt, "0123456789- "))
+								this.$doKeyPress_(evt); } ]]>
+								
+								
+								
+								
+								
+							</attribute>
+						</textbox>
 					</row>
 					<row>
 						<label value="" />

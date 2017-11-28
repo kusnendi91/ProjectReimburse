@@ -1,7 +1,7 @@
 <?page title="Welcome to IGLO Employee Reimburse" contentType="text/html;charset=UTF-8"?>
+<?init class="vmd.AuthCheckerVmd" ?>
 <zk>
-	<window title="Welcome to IGLO Employee Reimburse"
-		border="normal">
-		New Content Here!
+	<window title="Welcome to IGLO Employee Reimburse" border="normal">
+	
 	</window>
 </zk>

@@ -8,12 +8,16 @@ import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.sound.AAudio;
 import org.zkoss.zk.ui.select.annotation.VariableResolver;
 import org.zkoss.zk.ui.select.annotation.WireVariable;
 import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Messagebox.Button;
+import org.zkoss.zul.Messagebox.ClickEvent;
 
-import entity.MstKaryawan;
 import entity.MstProject;
 import service.MstProjectSvc;
 
@@ -117,6 +121,7 @@ public class projectVmd {
 		setStatusPopUp(true);
 		setDisable(false);
 		setFlagtambah(1);
+		mstProject = null;
 		mstProject = new MstProject();
 	}
 
@@ -136,12 +141,24 @@ public class projectVmd {
 	@NotifyChange("mstProject")
 	public void delete() {
 		try {
-			mstProjectSvc.delete(mstProject.getKodeProject());
-			listProject.remove(mstProject);
-			BindUtils.postNotifyChange(null, null, projectVmd.this,
-					"listProject");
-			Clients.showNotification("Data berhasil di delete",
-					Clients.NOTIFICATION_TYPE_INFO, null, null, 500);
+			Messagebox.show("Apakah yakin project " + mstProject.getNamaProject() + " dihapus?", "Perhatian",
+					new Button[] { Button.YES, Button.NO },
+					Messagebox.QUESTION, Button.NO,
+					new EventListener<Messagebox.ClickEvent>() {
+
+						@Override
+						public void onEvent(ClickEvent event) throws Exception {
+
+							if (Messagebox.ON_YES.equals(event.getName())) {
+								mstProjectSvc.delete(mstProject.getKodeProject());
+								listProject.remove(mstProject);
+								BindUtils.postNotifyChange(null, null, projectVmd.this,
+										"listProject");
+								Clients.showNotification("Data berhasil di delete",
+										Clients.NOTIFICATION_TYPE_INFO, null, null, 500);
+							}
+						}
+					});
 		} catch (NullPointerException e) {
 			Messagebox.show("Pilih data yang akan dihapus!");
 		}
@@ -155,25 +172,54 @@ public class projectVmd {
 	}
 
 	@Command("save")
-	@NotifyChange({ "statusPopUp", "mstProject" })
+	@NotifyChange({ "statusPopUp","mstProject", "flagtambah" })
 	public void save() {
 		try {
-			if (mstProject.getKodeProject() != 0) {
-				mstProjectSvc.update(mstProject);
-				Clients.showNotification("Data berhasil diupdate",
-						Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
-				setStatusPopUp(false);
+			MstProject findPro = mstProjectSvc.findNama(mstProject
+					.getNamaProject());
+
+			if (mstProject.getNamaProject() == null) {
+				Messagebox.show("ERROR! Silahkan cek kembali inputan Anda!");
 			} else {
-				mstProjectSvc.save(mstProject);
-				Clients.showNotification("Data berhasil disimpan",
-						Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
-				setStatusPopUp(false);
-				setStatusPopUp(true);
-				add();
+				if (mstProject.getKodeProject() != 0) {
+					mstProjectSvc.update(mstProject);
+					Clients.showNotification("Data berhasil diupdate",
+							Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
+					setStatusPopUp(false);
+				} else {
+					if (findPro.getNamaProject() != null) {
+						Messagebox.show("Nama project " + mstProject.getNamaProject() + " sudah ada di database. Lanjut?", "Perhatian!",
+								new Button[] { Button.YES, Button.NO },
+								Messagebox.QUESTION, Button.NO,
+								new EventListener<Messagebox.ClickEvent>() {
+
+									@Override
+									public void onEvent(ClickEvent event) throws Exception {
+
+										if (Messagebox.ON_YES.equals(event.getName())) {
+											mstProjectSvc.save(mstProject);
+											Clients.showNotification("Data berhasil disimpan",
+													Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
+										}
+									}
+								});
+						setStatusPopUp(false);
+					} else if (findPro.getNamaProject() == null){
+						mstProjectSvc.save(mstProject);
+						Clients.showNotification("Data berhasil disimpan",
+								Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
+						add();
+					}
+				}
 			}
 		} catch (Exception e) {
 			Messagebox.show("ERROR! Silahkan cek kembali inputan Anda!");
 		}
 	}
 
+	@Command("isiSearch")
+	@NotifyChange("search")
+	public void isiSearch() {
+		setSearch("");
+	}
 }

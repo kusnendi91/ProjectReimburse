@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +40,8 @@ public class HistoryDaoImpl implements HistoryDao {
 				+ "(NIK, NAMA_KARYAWAN, NAMA_PROJECT, PERIODE, TRANSPORT, PARKIR, KESEHATAN, "
 				+ "BPJS, REWARD_MONTHLY, REWARD_TRIWULAN, TAXI, LEMBUR, ENTERTAIN_INTERNAL, "
 				+ "ENTERTAIN_EKSTERNAL, DESKRIPSI_OTHER, NILAI_OTHER, SUBTOTAL, NAMA_USER, "
-				+ "HISTORY_DATE, STATUS) "
-				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "HISTORY_DATE, STATUS, NOTES) "
+				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
@@ -64,8 +66,9 @@ public class HistoryDaoImpl implements HistoryDao {
 			ps.setDouble(16, history.getNilaiOther());
 			ps.setDouble(17, history.getSubtotal());
 			ps.setString(18, history.getNamaUser());
-			ps.setDate(19, history.getHistoryDate());
+			ps.setTimestamp(19, history.getHistoryDate());
 			ps.setString(20, history.getStatus());
+			ps.setString(21, history.getNotes());
 
 			int out = ps.executeUpdate();
 			if (out != 0) {
@@ -150,8 +153,12 @@ public class HistoryDaoImpl implements HistoryDao {
 				history.setNilaiOther(rs.getDouble("NILAI_OTHER"));
 				history.setSubtotal(rs.getDouble("SUBTOTAL"));
 				history.setNamaUser(rs.getString("NAMA_USER"));
-				history.setHistoryDate(rs.getDate("HISTORY_DATE"));
+				SimpleDateFormat ft = new SimpleDateFormat ("E dd-MM-yyyy hh:mm:s");
+				String date = ft.format(rs.getTimestamp("HISTORY_DATE"));
+				history.sethDate(date);
+				history.setHistoryDate(rs.getTimestamp("HISTORY_DATE"));
 				history.setStatus(rs.getString("STATUS"));
+				history.setNotes(rs.getString("NOTES"));
 
 				listHistory.add(history);
 			}
@@ -204,8 +211,9 @@ public class HistoryDaoImpl implements HistoryDao {
 				history.setNilaiOther(rs.getDouble("NILAI_OTHER"));
 				history.setSubtotal(rs.getDouble("SUBTOTAL"));
 				history.setNamaUser(rs.getString("NAMA_USER"));
-				history.setHistoryDate(rs.getDate("HISTORY_DATE"));
+				history.setHistoryDate(rs.getTimestamp("HISTORY_DATE"));
 				history.setStatus(rs.getString("STATUS"));
+				history.setNotes(rs.getString("NOTES"));
 			}
 
 		} catch (SQLException e) {
@@ -265,8 +273,12 @@ public class HistoryDaoImpl implements HistoryDao {
 				history.setNilaiOther(rs.getDouble("NILAI_OTHER"));
 				history.setSubtotal(rs.getDouble("SUBTOTAL"));
 				history.setNamaUser(rs.getString("NAMA_USER"));
-				history.setHistoryDate(rs.getDate("HISTORY_DATE"));
+				SimpleDateFormat ft = new SimpleDateFormat ("E dd-MM-yyyy hh:mm:s");
+				String date = ft.format(rs.getTimestamp("HISTORY_DATE"));
+				history.sethDate(date);
+				history.setHistoryDate(rs.getTimestamp("HISTORY_DATE"));
 				history.setStatus(rs.getString("STATUS"));
+				history.setNotes(rs.getString("NOTES"));
 
 				listHistory.add(history);
 			}
@@ -285,7 +297,7 @@ public class HistoryDaoImpl implements HistoryDao {
 	}
 
 	@Override
-	public List<History> findUpdate(String nik, String namaProject, Date periode, Date historyDate) {
+	public List<History> findUpdate(String nik, String namaProject, Date periode, Timestamp historyDate) {
 		String query = "SELECT TOP 2 * FROM HISTORY_CLAIM WHERE NIK = '"+ nik +"' AND "
 				+ "NAMA_PROJECT = '"+ namaProject +"' AND PERIODE = '"+ periode +"' AND HISTORY_DATE <= '"+ historyDate +"' "
 				+ "ORDER BY HISTORY_DATE DESC";
@@ -321,8 +333,12 @@ public class HistoryDaoImpl implements HistoryDao {
 				history.setNilaiOther(rs.getDouble("NILAI_OTHER"));
 				history.setSubtotal(rs.getDouble("SUBTOTAL"));
 				history.setNamaUser(rs.getString("NAMA_USER"));
-				history.setHistoryDate(rs.getDate("HISTORY_DATE"));
+				SimpleDateFormat ft = new SimpleDateFormat ("E dd-MM-yyyy hh:mm:s");
+				String date = ft.format(rs.getTimestamp("HISTORY_DATE"));
+				history.sethDate(date);
+				history.setHistoryDate(rs.getTimestamp("HISTORY_DATE"));
 				history.setStatus(rs.getString("STATUS"));
+				history.setNotes(rs.getString("NOTES"));
 
 				listHistory.add(history);
 			}

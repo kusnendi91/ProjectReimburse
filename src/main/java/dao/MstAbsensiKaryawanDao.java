@@ -11,4 +11,5 @@ public interface MstAbsensiKaryawanDao {
 	public List<MstAbsensiKaryawan> findAll();
 	public MstAbsensiKaryawan findOne(int kodeAbsen);
 	public List<MstAbsensiKaryawan> searchData(String key);
+	public MstAbsensiKaryawan findByPeriode(String noAbsen, int m, int y);
 }

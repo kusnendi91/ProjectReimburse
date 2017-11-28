@@ -1,34 +1,37 @@
 <?page title="Project Management" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<window title="Project Management" border="normal"
-		apply="org.zkoss.bind.BindComposer"
+		sclass="windowcolorstyle" apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('vmd.projectVmd')">
 
-		<vlayout>
-			<hlayout>
-				<button label="Add" image="/imgs/plus.png"
+		<caption label="Data Project"
+			style="color:white; font-weight:bold;">
+		</caption>
+		<style>.windowcolorstyle{ background-color:#911f1f; }</style>
+
+		<vbox>
+			<button label="Add" image="/imgs/plus.png"
 				hoverImage="/imgs/Check_16x16.png" height="30px"
-					onClick="@command('addProject')" />
-			</hlayout>
-			<space />
-			<hlayout>
-				<image src="./Icon/Search_16x16.png" style="margin-left: 440px;"/>
+				onClick="@command('addProject')" />
+			<separator spacing="2" />
+			<hbox align="end">
 				<textbox value="@bind(vm.search)"
-					onOK="@command('search')" />
-			</hlayout>
-		</vlayout>
+					onOK="@command('search')" onFocus="@command('isiSearch')" />
+				<image src="/Icon/Search_16x16.png" vflex="1" />
+			</hbox>
+		</vbox>
 
 		<space></space>
 
 		<div>
 			<listbox model="@load(vm.listProject)"
 				selectedItem="@bind(vm.mstProject)" mold="paging"
-				pagingPosition="bottom" pageSize="8" width="600px">
+				pagingPosition="bottom" pageSize="8" width="457px" emptyMessage="No Rows Found">
 				<listhead>
 					<listheader label="Kode Project" sort="auto"
-						width="200px" />
-					<listheader label="Nama Project" sort="auto" />
-					<listheader />
+						width="100px" align="center"/>
+					<listheader label="Nama Project" sort="auto" width="250px" align="center"/>
+					<listheader label="Edit / Delete" align="center" width="100px" />
 				</listhead>
 
 				<template name="model">
@@ -37,10 +40,10 @@
 						<listcell label="@load(each.namaProject)" />
 						<listcell>
 							<hbox>
-								<image src="./Icon/Edit_16x16.png"
-									onClick="@command('editProject')" style="margin-left: 50px;" />
-								<image src="./imgs/Delete_16x16.png"
-									onClick="@command('deleteProject')" style="margin-left: 50px;" />
+								<image src="/imgs/edit.png"
+									onClick="@command('editProject')" style="margin-left: 20px;" />
+								<image src="/imgs/Delete_16x16.png"
+									onClick="@command('deleteProject')" style="margin-left: 20px;" />
 							</hbox>
 						</listcell>
 					</listitem>
@@ -72,9 +75,10 @@
 						<label value="" />
 						<hlayout>
 							<button label="Save" height="30px"
-								onClick="@command('save')" />
+								onClick="@command('save')" image="/imgs/Save_16x16.png"
+								hoverImage="/imgs/Check_16x16.png" />
 							<button label="End" height="30px"
-								onClick="@command('back')" />
+								onClick="@command('back')" image="/imgs/Cancel_16x16.png" />
 						</hlayout>
 					</row>
 				</rows>

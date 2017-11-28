@@ -283,4 +283,43 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 		return mstKaryawan;
 	}
 
+	@Override
+	public List<MstKaryawan> findAllNotUser() {
+		String query = "SELECT K.* FROM MST_KARYAWAN AS K LEFT JOIN MST_USER AS U ON K.NIK=U.NIK WHERE K.NIK NOT IN (SELECT NIK FROM MST_USER) ORDER BY NAMA";
+		List<MstKaryawan> listKaryawan = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			con = dataSource.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				MstKaryawan mstKaryawan = new MstKaryawan();
+				mstKaryawan.setNik(rs.getString("NIK"));
+				mstKaryawan.setNamaKaryawan(rs.getString("NAMA"));
+				mstKaryawan.setCompany(rs.getString("COMPANY"));
+				mstKaryawan.setNoAbsen(rs.getString("NO_ABSEN"));
+				mstKaryawan.setJenisKelamin(rs.getString("JENIS_KELAMIN"));
+				mstKaryawan.setTanggalMasuk(rs.getDate("TANGGAL_MASUK"));
+				mstKaryawan.setNoRekening(rs.getString("NO_REKENING"));
+				listKaryawan.add(mstKaryawan);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				ps.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return listKaryawan;
+	}
+
 }

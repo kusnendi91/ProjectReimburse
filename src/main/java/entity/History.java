@@ -1,6 +1,7 @@
 package entity;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class History {
 	private int kodeHistory;
@@ -22,9 +23,24 @@ public class History {
 	private double nilaiOther;
 	private double subtotal;
 	private String namaUser;
-	private Date historyDate;
+	private Timestamp historyDate;
+	private String hDate;
 	private String status;
+	private String notes;
 	
+	
+	public String gethDate() {
+		return hDate;
+	}
+	public void sethDate(String hDate) {
+		this.hDate = hDate;
+	}
+	public String getNotes() {
+		return notes;
+	}
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
 	public int getKodeHistory() {
 		return kodeHistory;
 	}
@@ -139,10 +155,10 @@ public class History {
 	public void setNamaUser(String namaUser) {
 		this.namaUser = namaUser;
 	}
-	public Date getHistoryDate() {
+	public Timestamp getHistoryDate() {
 		return historyDate;
 	}
-	public void setHistoryDate(Date historyDate) {
+	public void setHistoryDate(Timestamp historyDate) {
 		this.historyDate = historyDate;
 	}
 	public String getStatus() {

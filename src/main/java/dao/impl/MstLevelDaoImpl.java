@@ -24,14 +24,13 @@ public class MstLevelDaoImpl implements MstLevelDao{
 	@Override
 	public void save(MstLevel mstLevel) {
 		String query = "INSERT INTO MST_LEVEL "
-				+ "(KODE_LEVEL, LEVEL) " + "values(?,?)";
+				+ "(LEVEL) " + "values(?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
 			con = dataSource.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setInt(1, mstLevel.getKodeLevel());
-			ps.setString(2, mstLevel.getLevel());
+			ps.setString(1, mstLevel.getLevel());
 			
 			int out = ps.executeUpdate();
 			if (out != 0) {
@@ -114,7 +113,7 @@ public class MstLevelDaoImpl implements MstLevelDao{
 
 	@Override
 	public List<MstLevel> findAll() {
-		String query = "SELECT * FROM MST_LEVEL";
+		String query = "SELECT * FROM MST_LEVEL WHERE LEVEL NOT IN ('Super Admin')";
 		List<MstLevel> listLevel = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement ps = null;

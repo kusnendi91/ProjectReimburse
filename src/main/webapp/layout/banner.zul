@@ -1,10 +1,49 @@
-<div hflex="1" vflex="1" sclass="banner">
-	<hbox hflex="1" vflex="1" align="center">
-		<a href="http://www.indocyber.co.id/">
-			<image src="/imgs/logo.png" width="90px" />
-		</a>
-		<div width="600px">
-			<label value="IGLO Employee Reimburse" sclass="banner-head"></label>
-		</div>
-	</hbox>
-</div>
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+<style>
+		.labelstyle1 {
+			font-weight: bold;
+			font-family: 'Trebuchet MS';
+			color: 	#B22222;
+			font-size : 20px;
+		}
+		
+		.border {
+			border-style: solid;
+    		border-color: #B22222;
+		}
+		
+		.labelstatusstyle {
+			font-weight: bold;
+			font-family: 'Trebuchet MS';
+			color: 	#2c5bba;
+			font-size : 15px;
+		}
+		.labeluserstyle {
+			font-weight: bold;
+			font-family: 'Trebuchet MS';
+			color: 	#2c5bba;
+			font-size : 15px;
+		}
+	</style>
+	<div hflex="1" vflex="1" sclass="border" style="background-color: white"
+		 apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init('vmd.bannerVmd')">
+		<hbox hflex="1" vflex="1" align="center">
+			<a href="http://www.indocyber.co.id/">
+				<image src="/imgs/logo.png" width="60px" />
+			</a>
+			<div width="1000px" align = "left" >
+				<label value="PT Indocyber Global Teknologi" sclass="labelstyle1"/>
+			</div>
+			<div width="200px" align="right">
+				
+				<label value="@load(vm.mstUser.mstKaryawan.namaKaryawan)" sclass="labeluserstyle"/>
+				<label value=", " sclass="labeluserstyle"/>
+				<a href="#">
+				<label value="Logout" onClick="@command('logout')" sclass="labelstatusstyle"/>
+				</a>
+			</div>
+		</hbox>
+	</div>
+</zk>

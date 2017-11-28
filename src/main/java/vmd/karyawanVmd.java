@@ -15,6 +15,11 @@ import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zul.Include;
 import org.zkoss.zul.Messagebox;
 
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Messagebox.Button;
+import org.zkoss.zul.Messagebox.ClickEvent;
+
 import entity.MstKaryawan;
 import service.MstKaryawanSvc;
 
@@ -139,6 +144,7 @@ public class karyawanVmd {
 		if (mstKaryawan == null) {
 			Messagebox.show("Pilih data yang akan diedit!");
 		} else {
+			listStatus.clear();
 			listStatus.add("IGT");
 			listStatus.add("IMK");
 			listStatus.add("ICN");
@@ -153,28 +159,41 @@ public class karyawanVmd {
 	@NotifyChange("mstKaryawan")
 	public void delete() {
 		try {
-			mstKaryawanSvc.delete(mstKaryawan.getNik());
-			listKaryawan.remove(mstKaryawan);
-			BindUtils.postNotifyChange(null, null, karyawanVmd.this,
-					"listKaryawan");
-			Clients.showNotification("Data berhasil di delete",
-					Clients.NOTIFICATION_TYPE_INFO, null, null, 500);
+			Messagebox.show("Apakah yakin karyawan atas nama " + mstKaryawan.getNamaKaryawan() + " dihapus?", "perhatian",
+					new Button[] { Button.YES, Button.NO },
+					Messagebox.QUESTION, Button.NO,
+					new EventListener<Messagebox.ClickEvent>() {
+
+						@Override
+						public void onEvent(ClickEvent event) throws Exception {
+
+							if (Messagebox.ON_YES.equals(event.getName())) {
+								mstKaryawanSvc.delete(mstKaryawan.getNik());
+								listKaryawan.remove(mstKaryawan);
+								BindUtils.postNotifyChange(null, null, karyawanVmd.this,
+										"listKaryawan");
+								Clients.showNotification("Data berhasil di delete",
+										Clients.NOTIFICATION_TYPE_INFO, null, null, 500);
+							}
+						}
+					});
 		} catch (NullPointerException e) {
 			Messagebox.show("Pilih data yang akan dihapus!");
 		}
 	}
 	
 	@Command("back")
-	@NotifyChange({"mstKaryawan","statusPopUp","listStatus"})
+	@NotifyChange({"mstKaryawan","statusPopUp","listStatus", "listKaryawan"})
 	public void backDetail() {
 		listStatus.clear();
+		load();
 		mstKaryawan = null;
 		setStatusPopUp(false);
 	}
 	
 	
 	@Command("save")
-	@NotifyChange({"statusPopUp", "mstKaryawan"})
+	@NotifyChange({"statusPopUp", "mstKaryawan", "listKaryawan"})
 	public void save(){
 		try {
 			MstKaryawan findKaryawan = mstKaryawanSvc.findOne(mstKaryawan.getNik());
@@ -185,6 +204,8 @@ public class karyawanVmd {
 						(mstKaryawan.getCompany().equals("ICN")) || 
 						(mstKaryawan.getCompany().equals("IDS"))) {
 							mstKaryawanSvc.save(mstKaryawan);
+							BindUtils.postNotifyChange(null, null, karyawanVmd.this,
+									"listKaryawan");
 							Clients.showNotification("Data berhasil disimpan",
 									Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
 							setStatusPopUp(false);
@@ -199,6 +220,8 @@ public class karyawanVmd {
 						(mstKaryawan.getCompany().equals("ICN")) || 
 						(mstKaryawan.getCompany().equals("IDS"))) {
 							mstKaryawanSvc.update(mstKaryawan);
+							BindUtils.postNotifyChange(null, null, karyawanVmd.this,
+									"listKaryawan");
 							Clients.showNotification("Data berhasil diupdate",
 									Clients.NOTIFICATION_TYPE_INFO, null, null, 1500);
 							setStatusPopUp(false);
@@ -215,12 +238,26 @@ public class karyawanVmd {
 	@Command("cekIsi")
 	@NotifyChange("mstKaryawan")
 	public void cekIsi(){
-		if (mstKaryawan.getJenisKelamin().equals("L") || mstKaryawan.getJenisKelamin().equals("P")) {
+		if (mstKaryawan.getJenisKelamin().equals("L") || mstKaryawan.getJenisKelamin().equals("P") || mstKaryawan.getJenisKelamin().equals("")) {
 			
 		}else{
 			Messagebox.show("ERROR! Cek kembali inputan! Inputan Jenis Kelamin L/P");
 			mstKaryawan.setJenisKelamin(null);
 		}
 		
+	}
+	
+	
+	@Command("cekRek")
+	@NotifyChange("mstKaryawan")
+	public void cekRek(){
+		
+	}
+	
+	
+	@Command("isiSearch")
+	@NotifyChange("search")
+	public void isiSearch() {
+		setSearch("");
 	}
 }

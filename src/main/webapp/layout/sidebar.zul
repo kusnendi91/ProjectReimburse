@@ -1,16 +1,61 @@
-<grid hflex="1" vflex="1" sclass="sidebar" id="fnList"
-	apply="org.zkoss.bind.BindComposer" viewModel="@id('vm') @init('pagevmd.SidebarAjaxBased')"
-	model="@load(vm.sidebarPage)">
-	<columns>
-		<column width="36px"></column>
-		<column></column>
-	</columns>
-	<rows>
-		<template name="model">
-			<row sclass="sidebar-fn" onClick="@global-command('onNavigate', page=each)">
-				<image src="@load(each.iconUri)"></image>
-				<label value="@load(each.label)"></label>
-			</row>
-		</template>
-	</rows>
-</grid>
+<?page title="new page title" contentType="text/html;charset=UTF-8"?>
+<zk>
+
+	<style>
+		.labelmenustyle { font-weight: bold; font-family: 'TrebuchetMS';
+		color: #2222b2; font-size : 15px; }
+	</style>
+	<vbox spacing="0" width="100%" height="50%">
+		<!-- <groupbox>
+			<caption>User</caption> -->
+		<grid apply="org.zkoss.bind.BindComposer"
+	viewModel="@id('vm') @init('vmd.bannerVmd')">
+			<columns>
+				<column align="center" />
+			</columns>
+			<rows>
+				<row>
+					<image src="/imgs/profile.png" width="70px" />
+				</row>
+				<row>
+					<vbox>
+						<hbox>
+					<label value="User : " sclass="labelmenustyle" />
+					<label value="@load(vm.mstUser.mstKaryawan.namaKaryawan)" sclass="labelmenustyle"/>
+					</hbox>
+					<hbox>
+					<label value="Role : " sclass="labelmenustyle" />
+					<label value="@load(vm.mstUser.mstLevel.level)" sclass="labelmenustyle"/>
+					</hbox>
+					</vbox>
+				</row>
+			</rows>
+		</grid>
+		<!-- <vlayout>
+			<hbox align="end">
+				<button label="Logout"></button>
+			</hbox>
+		</vlayout> -->
+		<!-- </groupbox> -->
+		<splitter id="splitSidebar" />
+		<grid hflex="1" vflex="1" sclass="sidebar" id="fnlist"
+			apply="org.zkoss.bind.BindComposer"
+			viewModel="@id('vm') @init('pagevmd.SidebarAjaxBasedVmd')"
+			model="@load(vm.sidebarPages)">
+			<columns>
+				<column width="36px" />
+				<column />
+			</columns>
+			<rows>
+				<template name="model">
+					<row sclass="sidebar-fn"
+						onClick="@global-command('onNavigate', page=each)">
+						<image src="@load(each.iconUri)" />
+						<label value="@load(each.label)"
+							sclass="labelmenustyle" />
+					</row>
+				</template>
+			</rows>
+		</grid>
+	</vbox>
+</zk>

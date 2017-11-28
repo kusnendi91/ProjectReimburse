@@ -46,4 +46,10 @@ public class MstAbsensiKaryawanSvcImpl implements MstAbsensiKaryawanSvc{
 		return mstAbsensiKaryawanDao.searchData(key);
 	}
 
+	@Override
+	public MstAbsensiKaryawan findByPeriode(String noAbsen, int m, int y) {
+		// TODO Auto-generated method stub
+		return mstAbsensiKaryawanDao.findByPeriode(noAbsen, m, y);
+	}
+
 }

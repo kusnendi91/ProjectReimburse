@@ -34,17 +34,16 @@ public class MstUserDaoImpl implements MstUserDao {
 	@Override
 	public void save(MstUser mstUser) {
 		String query = "INSERT INTO MST_USER "
-				+ "(KODE_USER, NIK, KODE_LEVEL, PASSWORD) " + "values(?,?,?,?)";
+				+ "(NIK, KODE_LEVEL, PASSWORD) values (?,?,?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
 			con = dataSource.getConnection();
 			ps = con.prepareStatement(query);
-			ps.setInt(1, mstUser.getKodeUser());
-			ps.setString(2, mstUser.getMstKaryawan().getNik());
-			ps.setInt(3, mstUser.getMstLevel().getKodeLevel());
-			ps.setString(4, mstUser.getPassword());
-
+			ps.setString(1, mstUser.getMstKaryawan().getNik());
+			ps.setInt(2, mstUser.getMstLevel().getKodeLevel());
+			ps.setString(3, mstUser.getPassword());
+			
 			int out = ps.executeUpdate();
 			if (out != 0) {
 				System.out.println("Sukses");
@@ -128,7 +127,7 @@ public class MstUserDaoImpl implements MstUserDao {
 
 	@Override
 	public List<MstUser> findAll() {
-		String query = "SELECT * FROM MST_USER";
+		String query = "SELECT * FROM MST_USER WHERE NIK NOT IN ('01010001')";
 		List<MstUser> listUser = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -223,9 +222,8 @@ public class MstUserDaoImpl implements MstUserDao {
 
 		String query = "SELECT KODE_USER, K.NIK, L.KODE_LEVEL, PASSWORD "
 				+ "FROM (MST_USER AS U JOIN MST_KARYAWAN AS K ON U.NIK=K.NIK) JOIN MST_LEVEL AS L ON L.KODE_LEVEL=U.KODE_LEVEL "
-				+ "WHERE (KODE_USER LIKE '" + search + "' OR K.NIK LIKE '"
-				+ search + "' " + "OR L.KODE_LEVEL LIKE '" + search
-				+ "' OR PASSWORD LIKE '" + search + "')";
+				+ "WHERE (K.NIK LIKE '" + search + "' OR LEVEL LIKE '" + search
+				+ "' OR PASSWORD LIKE '" + search + "' OR NAMA LIKE '"+ search +"') AND U.NIK NOT IN ('01010001')";
 
 		List<MstUser> listUser = new ArrayList<>();
 
@@ -269,6 +267,49 @@ public class MstUserDaoImpl implements MstUserDao {
 			}
 		}
 		return listUser;
+	}
+	
+	
+	@Override
+	public MstUser findByUsernameAndPassword(String username, String password) {
+		String query = "SELECT * FROM MST_USER "
+				+ "WHERE NIK = '" +username+"' AND PASSWORD = '"+password+"'";
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		MstUser mstUser = new MstUser();
+		MstKaryawan mstKaryawan = new MstKaryawan();
+		MstLevel mstLevel = new MstLevel();
+		
+		try{
+			con = dataSource.getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			while(rs.next()){
+				mstUser.setKodeUser(rs.getInt("KODE_USER"));
+				
+				String nik = (rs.getString("NIK"));
+				mstKaryawan = mstKaryawanDao.findOne(nik);
+				mstUser.setMstKaryawan(mstKaryawan);
+				int kodeLevel = (rs.getInt("KODE_LEVEL"));
+				mstLevel = mstLevelDao.findOne(kodeLevel);
+				mstUser.setMstLevel(mstLevel);
+				mstUser.setPassword(rs.getString("PASSWORD"));
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally{
+			try{
+				rs.close();
+				ps.close();
+				con.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+		return mstUser;
 	}
 
 }

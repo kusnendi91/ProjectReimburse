@@ -1,6 +1,7 @@
 package service.impl;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,7 @@ public class HistorySvcImpl implements HistorySvc{
 	}
 
 	@Override
-	public List<History> findUpdate(String nik, String namaProject, Date periode, Date historyDate) {
+	public List<History> findUpdate(String nik, String namaProject, Date periode, Timestamp historyDate) {
 		return historyDao.findUpdate(nik, namaProject, periode, historyDate);
 	}
 

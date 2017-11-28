@@ -11,6 +11,6 @@ public class SidebarAjaxBased {
 	private SidebarPageConfig pageConfig = new SidebarPageConfigAjaxBasedImpl();
 	
 	public List<SidebarPage> getSidebarPage() {
-		return pageConfig.getPage();
+		return pageConfig.getPages();
 	}
 }

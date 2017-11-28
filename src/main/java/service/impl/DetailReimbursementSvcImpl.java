@@ -1,5 +1,6 @@
 package service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,18 @@ public class DetailReimbursementSvcImpl implements DetailReimbursementSvc
 	public List<DetailReimbursement> searchData(String key) {
 		return detailReimbursementDao.searchData(key);
 	}
+
+	@Override
+	public DetailReimbursement findByDateNameAndKlaim(String nik, int kode, int m, int y) {
+		// TODO Auto-generated method stub
+		return detailReimbursementDao.findByDateNameAndKlaim(nik, kode, m, y);
+	}
+
+	@Override
+	public void insert(DetailReimbursement detailReimbursement) {
+		detailReimbursementDao.insert(detailReimbursement);
+		
+	}
+
 
 }
