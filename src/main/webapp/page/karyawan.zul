@@ -4,12 +4,10 @@
 		sclass="windowcolorstyle" apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm') @init('vmd.karyawanVmd')">
 
-		<caption label="Data Employee" style="color:white; font-weight:bold;"></caption>
-		<style>
-			.windowcolorstyle{
-				background-color:#911f1f;
-			}
-		</style>
+		<caption label="Data Employee"
+			style="color:white; font-weight:bold;">
+		</caption>
+		<style>.windowcolorstyle{ background-color:#911f1f; }</style>
 
 		<hlayout>
 			<button label="add" image="/imgs/plus.png"
@@ -18,7 +16,8 @@
 		</hlayout>
 		<div style="text-align:right">
 			<image src="/Icon/Search_16x16.png" />
-			<textbox value="@bind(vm.search)" onOK="@command('search')" onFocus="@command('isiSearch')"/>
+			<textbox value="@bind(vm.search)" onOK="@command('search')"
+				onFocus="@command('isiSearch')" />
 		</div>
 		<space />
 
@@ -27,14 +26,21 @@
 			pagingPosition="bottom" pageSize="10" emptyMessage="No Rows Found">
 
 			<listhead>
-				<listheader label="NIK" sort="auto" width="100px" align="center"/>
-				<listheader label="Nama Karyawan" width="300px" align="center"/>
-				<listheader label="Jenis Kelamin" width="100px" align="center"/>
-				<listheader label="Company" width="100px" align="center"/>
-				<listheader label="Tanggal Masuk" width="100px" align="center"/>
-				<listheader label="No Absen" width="100px" align="center"/>
-				<listheader label="No Rekening" width="120px" align="center"/>
-				<listheader label="Edit / Delete" align="center"/>
+				<listheader label="NIK" sort="auto" width="100px"
+					align="center" />
+				<listheader label="Nama Karyawan" width="300px"
+					align="center" />
+				<listheader label="Jenis Kelamin" width="100px"
+					align="center" />
+				<listheader label="Company" width="100px"
+					align="center" />
+				<listheader label="Tanggal Masuk" width="100px"
+					align="center" />
+				<listheader label="No Absen" width="100px"
+					align="center" />
+				<listheader label="No Rekening" width="120px"
+					align="center" />
+				<listheader label="Aktivation / Edit" align="center" />
 			</listhead>
 
 			<template name="model">
@@ -42,27 +48,36 @@
 					<listcell label="@load(each.nik)" />
 					<listcell label="@load(each.namaKaryawan)" />
 					<listcell label="@load(each.jenisKelamin)" />
-					<listcell label="@load(each.company)" />
+					<listcell label="@load(each.mstCompany.namaCompay)" />
 					<listcell label="@load(each.tanggalMasuk)" />
 					<listcell label="@load(each.noAbsen)" />
 					<listcell label="@load(each.noRekening)" />
 					<listcell>
 						<hbox>
+ 							<checkbox disabled="true"
+ 								checked="@load(each.status)" style="margin-left: 40px;">
+ 							</checkbox>
 							<image src="/imgs/edit.png"
-								onClick="@command('editEmployee')" style="margin-left: 70px;" />
-							<image src="/imgs/Delete_16x16.png"
-								onClick="@command('deleteEmployee')" style="margin-left: 20px;" />
+								onClick="@command('editEmployee')" style="margin-left: 30px;" />
 						</hbox>
 					</listcell>
 				</listitem>
 			</template>
 		</listbox>
-		<window title="Employee Form" border="normal"
-			visible="@bind(vm.statusPopUp)" width="400px" height="330px"
+		
+		
+		<window border="normal"
+		sclass="windowcolorstyle"
+			visible="@bind(vm.statusPopUp)" width="400px" height="370px"
 			mode="modal" contentStyle="overflow:auto"
 			style="-webkit-box-shadow: 1px 1px 10px 3px #969696; 
-   						   box-shadow: 1px 1px 10px 3px #969696;"
+  						   box-shadow: 1px 1px 10px 3px #969696;" 
 			xmlns:w="client">
+			
+			<caption label="Employee Form"
+				style="color:white; font-weight:bold;">
+			</caption>
+			
 			<grid>
 				<columns>
 					<column label="" width="150px" />
@@ -73,8 +88,9 @@
 						<label value="NIK" />
 						<textbox
 							constraint="no empty : NIK harus diisi!" maxlength="20"
-							value="@bind(vm.mstKaryawan.nik)" disabled="@load(vm.disable)">
+							value="@load(vm.mstKaryawan.nik) @save(vm.mstKaryawan.nik, before='save')" disabled="@load(vm.disable)">
 							<attribute w:name="doKeyPress_">
+
 
 
 
@@ -83,8 +99,9 @@
 
 								
 								<![CDATA[ function(evt) { if
-								(!this._shallIgnore(evt, "0123456789"))
-								this.$doKeyPress_(evt); } ]]>
+ 								(!this._shallIgnore(evt, "0123456789")) 
+ 								this.$doKeyPress_(evt); } ]]> 
+								
 								
 								
 								
@@ -98,7 +115,7 @@
 					<row>
 						<label value="Nama Karyawan" />
 						<textbox
-							value="@bind(vm.mstKaryawan.namaKaryawan)"
+							value="@load(vm.mstKaryawan.namaKaryawan) @save(vm.mstKaryawan.namaKaryawan, before='save')"
 							constraint="no empty : Nama harus diisi" />
 					</row>
 					<row>
@@ -108,9 +125,14 @@
 					</row>
 					<row>
 						<label value="Company" />
-						<combobox model="@load(vm.listStatus)"
-							selectedItem="@bind(vm.mstKaryawan.company)">
-
+						<combobox constraint="no empty : harus diisi"
+							model="@load(vm.listStatus)"
+							selectedItem="@save(vm.mstKaryawan.mstCompany, before='save')"
+							value="@load(vm.mstKaryawan.mstCompany.namaCompay)">
+							<template name="model">
+								<comboitem label="@load(each.namaCompay)"
+									value="@load(each.kodeCompany)" />
+							</template>
 						</combobox>
 					</row>
 
@@ -124,7 +146,7 @@
 
 					<row>
 						<label value="No Absen" />
-						<textbox value="@bind(vm.mstKaryawan.noAbsen)"
+						<textbox value="@load(vm.mstKaryawan.noAbsen) @save(vm.mstKaryawan.noAbsen, before='save')"
 							constraint="no empty : No Absen harus diisi">
 							<attribute w:name="doKeyPress_">
 
@@ -132,10 +154,12 @@
 
 
 
+
 								
 								<![CDATA[ function(evt) { if
-								(!this._shallIgnore(evt, "0123456789"))
-								this.$doKeyPress_(evt); } ]]>
+ 								(!this._shallIgnore(evt, "0123456789")) 
+ 								this.$doKeyPress_(evt); } ]]> 
+								
 								
 								
 								
@@ -151,21 +175,20 @@
 						<textbox
 							value="@bind(vm.mstKaryawan.noRekening)">
 							<attribute w:name="doKeyPress_">
-
-
-
-
 								
 								<![CDATA[ function(evt) { if
-								(!this._shallIgnore(evt, "0123456789- "))
-								this.$doKeyPress_(evt); } ]]>
-								
-								
-								
-								
+ 								(!this._shallIgnore(evt, "0123456789- ")) this.$doKeyPress_(evt); } ]]>
 								
 							</attribute>
 						</textbox>
+					</row>
+					<row>
+						<label value="Activation"/>
+						<radiogroup id="radiogroup" selectedItem="@load(vm.mstKaryawan.stat) @save(vm.mstKaryawan.status, before='save')">
+							<radio id="radioa" label="Active" value="true"/>
+							<space/>
+							<radio id="radiob" label="Disactive" value="false"/>
+						</radiogroup>
 					</row>
 					<row>
 						<label value="" />

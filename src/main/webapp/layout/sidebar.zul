@@ -5,7 +5,7 @@
 		.labelmenustyle { font-weight: bold; font-family: 'TrebuchetMS';
 		color: #2222b2; font-size : 15px; }
 	</style>
-	<vbox spacing="0" width="100%" height="50%">
+	<vbox spacing="0" width="100%" height="60%">
 		<!-- <groupbox>
 			<caption>User</caption> -->
 		<grid apply="org.zkoss.bind.BindComposer"

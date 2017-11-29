@@ -153,7 +153,7 @@ public class HistoryDaoImpl implements HistoryDao {
 				history.setNilaiOther(rs.getDouble("NILAI_OTHER"));
 				history.setSubtotal(rs.getDouble("SUBTOTAL"));
 				history.setNamaUser(rs.getString("NAMA_USER"));
-				SimpleDateFormat ft = new SimpleDateFormat ("E dd-MM-yyyy hh:mm:s");
+				SimpleDateFormat ft = new SimpleDateFormat ("EE dd-MM-yyyy hh:mm:s a");
 				String date = ft.format(rs.getTimestamp("HISTORY_DATE"));
 				history.sethDate(date);
 				history.setHistoryDate(rs.getTimestamp("HISTORY_DATE"));

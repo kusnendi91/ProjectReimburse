@@ -26,12 +26,15 @@
 		<div>
 			<listbox model="@load(vm.listProject)"
 				selectedItem="@bind(vm.mstProject)" mold="paging"
-				pagingPosition="bottom" pageSize="8" width="457px" emptyMessage="No Rows Found">
+				pagingPosition="bottom" pageSize="8" width="457px"
+				emptyMessage="No Rows Found">
 				<listhead>
 					<listheader label="Kode Project" sort="auto"
-						width="100px" align="center"/>
-					<listheader label="Nama Project" sort="auto" width="250px" align="center"/>
-					<listheader label="Edit / Delete" align="center" width="100px" />
+						width="100px" align="center" />
+					<listheader label="Nama Project" sort="auto"
+						width="250px" align="center" />
+					<listheader label="Activation / Edit" align="center"
+						width="100px" />
 				</listhead>
 
 				<template name="model">
@@ -40,10 +43,10 @@
 						<listcell label="@load(each.namaProject)" />
 						<listcell>
 							<hbox>
+								<checkbox disabled="true"
+									checked="@load(each.status)" style="margin-left: 40px;" />
 								<image src="/imgs/edit.png"
 									onClick="@command('editProject')" style="margin-left: 20px;" />
-								<image src="/imgs/Delete_16x16.png"
-									onClick="@command('deleteProject')" style="margin-left: 20px;" />
 							</hbox>
 						</listcell>
 					</listitem>
@@ -52,11 +55,15 @@
 		</div>
 
 
-		<window width="350px" height="120px" mode="modal"
-			contentStyle="overflow:auto"
+		<window width="350px" height="160px" mode="modal"
+			sclass="windowcolorstyle" contentStyle="overflow:auto"
 			style="-webkit-box-shadow: 1px 1px 5px 3px #969696;
 			box-shadow: 1px 1px 5px 3px #969696;"
-			title="Add Project" visible="@load(vm.statusPopUp)">
+			visible="@load(vm.statusPopUp)">
+
+			<caption label="Project Form"
+				style="color:white; font-weight:bold;">
+			</caption>
 
 			<grid>
 				<columns>
@@ -67,8 +74,20 @@
 					<row>
 						<label value="Nama Project : " />
 						<textbox
-							value="@bind(vm.mstProject.namaProject)" width="215px"
-							tabindex="1" constraint="no empty : Nama Project harus diisi!" />
+							value="@load(vm.mstProject.namaProject) @save(vm.mstProject.namaProject, before='save')"
+							width="215px" tabindex="1"
+							constraint="no empty : Nama Project harus diisi!" />
+					</row>
+					<row>
+						<label value="Activation" />
+						<radiogroup id="radiogroup"
+							selectedItem="@load(vm.mstProject.stat) @save(vm.mstProject.status, before='save')">
+							<radio id="radioa" label="Active"
+								value="true" />
+							<space />
+							<radio id="radiob" label="Disactive"
+								value="false" />
+						</radiogroup>
 					</row>
 
 					<row>

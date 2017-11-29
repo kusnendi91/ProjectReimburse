@@ -5,8 +5,10 @@ import java.sql.Date;
 public class DetailReimbursement implements Comparable<DetailReimbursement>{
 	private int kodeDetail;
 	private MstKaryawan mstKaryawan;
-	private Date periode;
+	private MstUser mstUser;
 	private MstProject mstProject;
+	private MstAbsensiKaryawan mstAbsensiKaryawan;
+	private Date periode;
 	private double transport;
 	private double parkir;
 	private double kesehatan;
@@ -20,9 +22,17 @@ public class DetailReimbursement implements Comparable<DetailReimbursement>{
 	private String deskripsiOther;
 	private double nilaiOther;
 	private double subtotal;
-	private String notes;
+	private String notesAdmin;
+	private String notesFinance;
+	private boolean status;
 	
 	
+	public MstUser getMstUser() {
+		return mstUser;
+	}
+	public void setMstUser(MstUser mstUser) {
+		this.mstUser = mstUser;
+	}
 	public int getKodeDetail() {
 		return kodeDetail;
 	}
@@ -125,15 +135,34 @@ public class DetailReimbursement implements Comparable<DetailReimbursement>{
 	public void setSubtotal(double subtotal) {
 		this.subtotal = subtotal;
 	}
-	public String getNotes() {
-		return notes;
+	public String getNotesAdmin() {
+		return notesAdmin;
 	}
-	public void setNotes(String notes) {
-		this.notes = notes;
+	public void setNotesAdmin(String notesAdmin) {
+		this.notesAdmin = notesAdmin;
+	}
+	public String getNotesFinance() {
+		return notesFinance;
+	}
+	public void setNotesFinance(String notesFinance) {
+		this.notesFinance = notesFinance;
+	}
+	
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 	@Override
 	public int compareTo(DetailReimbursement o) {
 		return this.mstKaryawan.getNamaKaryawan().compareTo(o.mstKaryawan.getNamaKaryawan());
+	}
+	public MstAbsensiKaryawan getMstAbsensiKaryawan() {
+		return mstAbsensiKaryawan;
+	}
+	public void setMstAbsensiKaryawan(MstAbsensiKaryawan mstAbsensiKaryawan) {
+		this.mstAbsensiKaryawan = mstAbsensiKaryawan;
 	}
 	
 	

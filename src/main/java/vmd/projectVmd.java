@@ -137,32 +137,32 @@ public class projectVmd {
 		}
 	}
 
-	@Command("deleteProject")
-	@NotifyChange("mstProject")
-	public void delete() {
-		try {
-			Messagebox.show("Apakah yakin project " + mstProject.getNamaProject() + " dihapus?", "Perhatian",
-					new Button[] { Button.YES, Button.NO },
-					Messagebox.QUESTION, Button.NO,
-					new EventListener<Messagebox.ClickEvent>() {
-
-						@Override
-						public void onEvent(ClickEvent event) throws Exception {
-
-							if (Messagebox.ON_YES.equals(event.getName())) {
-								mstProjectSvc.delete(mstProject.getKodeProject());
-								listProject.remove(mstProject);
-								BindUtils.postNotifyChange(null, null, projectVmd.this,
-										"listProject");
-								Clients.showNotification("Data berhasil di delete",
-										Clients.NOTIFICATION_TYPE_INFO, null, null, 500);
-							}
-						}
-					});
-		} catch (NullPointerException e) {
-			Messagebox.show("Pilih data yang akan dihapus!");
-		}
-	}
+//	@Command("deleteProject")
+//	@NotifyChange("mstProject")
+//	public void delete() {
+//		try {
+//			Messagebox.show("Apakah yakin project " + mstProject.getNamaProject() + " dihapus?", "Perhatian",
+//					new Button[] { Button.YES, Button.NO },
+//					Messagebox.QUESTION, Button.NO,
+//					new EventListener<Messagebox.ClickEvent>() {
+//
+//						@Override
+//						public void onEvent(ClickEvent event) throws Exception {
+//
+//							if (Messagebox.ON_YES.equals(event.getName())) {
+//								mstProjectSvc.delete(mstProject.getKodeProject());
+//								listProject.remove(mstProject);
+//								BindUtils.postNotifyChange(null, null, projectVmd.this,
+//										"listProject");
+//								Clients.showNotification("Data berhasil di delete",
+//										Clients.NOTIFICATION_TYPE_INFO, null, null, 500);
+//							}
+//						}
+//					});
+//		} catch (NullPointerException e) {
+//			Messagebox.show("Pilih data yang akan dihapus!");
+//		}
+//	}
 
 	@Command("back")
 	@NotifyChange({ "mstProject", "statusPopUp" })

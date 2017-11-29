@@ -14,4 +14,7 @@ public interface DetailReimbursementDao {
 	public List<DetailReimbursement> searchData(String key);
 	public DetailReimbursement findByDateNameAndKlaim(String nik, int kode, int m, int y);
 	public void insert(DetailReimbursement detailReimbursement);
+	public void addFinanceNotes(String notes, int kodeDetail);
+	public void changeStatus(int kodeDetail);
+	public List<DetailReimbursement> findByNoteFinance();
 }

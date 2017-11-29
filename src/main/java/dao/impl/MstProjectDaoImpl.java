@@ -25,13 +25,14 @@ public class MstProjectDaoImpl implements MstProjectDao{
 	@Override
 	public void save(MstProject mstProject) {
 		String query = "INSERT INTO MST_PROJECT "
-				+ "(NAMA_PROJECT) values (?)";
+				+ "(NAMA_PROJECT, STATUS) values (?,?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
 			con = dataSource.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setString(1, mstProject.getNamaProject());
+			ps.setBoolean(2, mstProject.isStatus());
 			
 			int out = ps.executeUpdate();
 			if (out != 0) {
@@ -53,7 +54,7 @@ public class MstProjectDaoImpl implements MstProjectDao{
 
 	@Override
 	public void update(MstProject mstProject) {
-		String query = "UPDATE MST_PROJECT SET NAMA_PROJECT=? "
+		String query = "UPDATE MST_PROJECT SET NAMA_PROJECT=?, STATUS=? "
 				+ "where KODE_PROJECT=?";
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -62,7 +63,8 @@ public class MstProjectDaoImpl implements MstProjectDao{
 			con = dataSource.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setString(1, mstProject.getNamaProject());
-			ps.setInt(2, mstProject.getKodeProject());
+			ps.setBoolean(2, mstProject.isStatus());
+			ps.setInt(3, mstProject.getKodeProject());
 			int out = ps.executeUpdate();
 			if (out != 0) {
 				System.out.println("Update Sukses");
@@ -130,6 +132,7 @@ public class MstProjectDaoImpl implements MstProjectDao{
 
 				mstProject.setKodeProject(rs.getInt("KODE_PROJECT"));
 				mstProject.setNamaProject(rs.getString("NAMA_PROJECT"));
+				mstProject.setStatus(rs.getBoolean("STATUS"));
 				listProject.add(mstProject);
 			}
 
@@ -164,6 +167,7 @@ public class MstProjectDaoImpl implements MstProjectDao{
 			while (rs.next()) {
 				mstProject.setKodeProject(rs.getInt("KODE_PROJECT"));
 				mstProject.setNamaProject(rs.getString("NAMA_PROJECT"));
+				mstProject.setStatus(rs.getBoolean("STATUS"));
 			}
 
 		} catch (SQLException e) {
@@ -203,6 +207,7 @@ public class MstProjectDaoImpl implements MstProjectDao{
 				MstProject mstProject = new MstProject();
 				mstProject.setKodeProject(rs.getInt("KODE_PROJECT"));
 				mstProject.setNamaProject(rs.getString("NAMA_PROJECT"));
+				mstProject.setStatus(rs.getBoolean("STATUS"));
 				listProject.add(mstProject);
 			}
 		} catch (SQLException e) {
@@ -236,6 +241,7 @@ public class MstProjectDaoImpl implements MstProjectDao{
 			while (rs.next()) {
 				mstProject.setKodeProject(rs.getInt("KODE_PROJECT"));
 				mstProject.setNamaProject(rs.getString("NAMA_PROJECT"));
+				mstProject.setStatus(rs.getBoolean("STATUS"));
 			}
 
 		} catch (SQLException e) {

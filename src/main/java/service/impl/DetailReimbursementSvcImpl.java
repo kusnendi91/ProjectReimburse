@@ -59,5 +59,20 @@ public class DetailReimbursementSvcImpl implements DetailReimbursementSvc
 		
 	}
 
+	@Override
+	public void addFinanceNotes(String notes, int kodeDetail) {
+		detailReimbursementDao.addFinanceNotes(notes, kodeDetail);
+	}
+
+	@Override
+	public void changeStatus(int kodeDetail) {
+		detailReimbursementDao.changeStatus(kodeDetail);
+	}
+
+	@Override
+	public List<DetailReimbursement> findByNoteFinance() {
+		return detailReimbursementDao.findByNoteFinance();
+	}
+
 
 }

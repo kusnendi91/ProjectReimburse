@@ -30,10 +30,10 @@ public class MstKaryawanSvcImpl implements MstKaryawanSvc{
 		mstKaryawanDao.update(mstKaryawan);
 	}
 
-	@Override
-	public void delete(String nikKaryawan) {
-		mstKaryawanDao.delete(nikKaryawan);
-	}
+//	@Override
+//	public void delete(String nikKaryawan) {
+//		mstKaryawanDao.delete(nikKaryawan);
+//	}
 
 	@Override
 	public MstKaryawan findOne(String nikKaryawan) {

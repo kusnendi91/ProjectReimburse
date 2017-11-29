@@ -10,11 +10,12 @@ public class SidebarPageConfigAjaxBasedImpl implements SidebarPageConfig{
 	HashMap<String,SidebarPage> pageMap = new LinkedHashMap<String,SidebarPage>();
 	
 	public SidebarPageConfigAjaxBasedImpl() { 
-		pageMap.put("fn1", new SidebarPage("Input Employee Claim", "/imgs/fn.png","/page/addClaim.zul"));
-		pageMap.put("fn2", new SidebarPage("History Claim", "/imgs/fn.png","/page/historyclaim.zul"));
-		pageMap.put("fn3", new SidebarPage("User Management", "/imgs/fn.png","/page/usermanagement.zul"));
-		pageMap.put("fn4", new SidebarPage("Employee Management", "/imgs/fn.png","/page/karyawan.zul"));
-		pageMap.put("fn5", new SidebarPage("Project Management", "/imgs/fn.png","/page/project.zul"));
+		pageMap.put("fn1", new SidebarPage("Input Employee Claim", "/imgs/grid.png","/page/addClaim.zul"));
+		pageMap.put("fn2", new SidebarPage("Reimbursment Claim", "/imgs/grid.png","/page/adminDetail.zul"));
+		pageMap.put("fn3", new SidebarPage("User Management", "/imgs/grid.png","/page/usermanagement.zul"));
+		pageMap.put("fn4", new SidebarPage("Employee Management", "/imgs/grid.png","/page/karyawan.zul"));
+		pageMap.put("fn5", new SidebarPage("Project Management", "/imgs/grid.png","/page/project.zul"));
+		pageMap.put("fn6", new SidebarPage("Company Management","/imgs/grid.png","/page/company.zul"));
 	}
 
 	public List<SidebarPage> getPages() {

@@ -174,7 +174,7 @@ public class MstUserDaoImpl implements MstUserDao {
 
 	@Override
 	public MstUser findOne(int kodeUser) {
-		String query = "SELECT * FROM MST_KARYAWAN WHERE KODE_USER = '"
+		String query = "SELECT * FROM MST_USER WHERE KODE_USER = '"
 				+ kodeUser + "'";
 		Connection con = null;
 		PreparedStatement ps = null;

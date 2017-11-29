@@ -12,7 +12,9 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import dao.MstCompayDao;
 import dao.MstKaryawanDao;
+import entity.MstCompany;
 import entity.MstKaryawan;
 
 @Repository
@@ -21,11 +23,14 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 	@Autowired
 	DataSource dataSource;
 	
+	@Autowired
+	MstCompayDao mstCompayDao;
+	
 	@Override
 	public void save(MstKaryawan mstKaryawan) {
 		String query = "INSERT INTO MST_KARYAWAN "
-				+ "(NIK, NAMA, COMPANY, NO_ABSEN, JENIS_KELAMIN, TANGGAL_MASUK, NO_REKENING) "
-				+ "values(?,?,?,?,?,?,?)";
+				+ "(NIK, NAMA, KODE_COMPANY, NO_ABSEN, JENIS_KELAMIN, TANGGAL_MASUK, NO_REKENING, STATUS) "
+				+ "values(?,?,?,?,?,?,?,?)";
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {
@@ -33,11 +38,12 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 			ps = con.prepareStatement(query);
 			ps.setString(1, mstKaryawan.getNik());
 			ps.setString(2, mstKaryawan.getNamaKaryawan());
-			ps.setString(3, mstKaryawan.getCompany());
+			ps.setInt(3, mstKaryawan.getMstCompany().getKodeCompany());
 			ps.setString(4, mstKaryawan.getNoAbsen());
 			ps.setString(5, mstKaryawan.getJenisKelamin());
 			ps.setDate(6, mstKaryawan.getTanggalMasuk());
 			ps.setString(7, mstKaryawan.getNoRekening());
+			ps.setBoolean(8, mstKaryawan.isStatus());
 
 			int out = ps.executeUpdate();
 			if (out != 0) {
@@ -59,7 +65,7 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 
 	@Override
 	public void update(MstKaryawan mstKaryawan) {
-		String query = "UPDATE MST_KARYAWAN SET NAMA=?, COMPANY=?, NO_ABSEN=?, JENIS_KELAMIN=?, TANGGAL_MASUK=?, NO_REKENING=? "
+		String query = "UPDATE MST_KARYAWAN SET NAMA=?, KODE_COMPANY=?, NO_ABSEN=?, JENIS_KELAMIN=?, TANGGAL_MASUK=?, NO_REKENING=?, STATUS=? "
 				+ "where NIK=?";
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -68,12 +74,13 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 			con = dataSource.getConnection();
 			ps = con.prepareStatement(query);
 			ps.setString(1, mstKaryawan.getNamaKaryawan());
-			ps.setString(2, mstKaryawan.getCompany());
+			ps.setInt(2, mstKaryawan.getMstCompany().getKodeCompany());
 			ps.setString(3, mstKaryawan.getNoAbsen());
 			ps.setString(4, mstKaryawan.getJenisKelamin());
 			ps.setDate(5, mstKaryawan.getTanggalMasuk());
 			ps.setString(6, mstKaryawan.getNoRekening());
-			ps.setString(7, mstKaryawan.getNik());
+			ps.setBoolean(7, mstKaryawan.isStatus());
+			ps.setString(8, mstKaryawan.getNik());
 			int out = ps.executeUpdate();
 			if (out != 0) {
 				System.out.println("Update Sukses");
@@ -93,35 +100,35 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 		}
 	}
 
-	@Override
-	public void delete(String nikKaryawan) {
-		String query = "DELETE FROM MST_KARYAWAN where NIK=?";
-		Connection con = null;
-		PreparedStatement ps = null;
-
-		try {
-			con = dataSource.getConnection();
-			ps = con.prepareStatement(query);
-			ps.setString(1, nikKaryawan);
-
-			int out = ps.executeUpdate();
-			if (out != 0) {
-				System.out.println("Karyawan Delete With Id=" + nikKaryawan);
-			} else {
-				System.out.println("No Karyawan Found With Id=" + nikKaryawan);
-
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				ps.close();
-				con.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+//	@Override
+//	public void delete(String nikKaryawan) {
+//		String query = "DELETE FROM MST_KARYAWAN where NIK=?";
+//		Connection con = null;
+//		PreparedStatement ps = null;
+//
+//		try {
+//			con = dataSource.getConnection();
+//			ps = con.prepareStatement(query);
+//			ps.setString(1, nikKaryawan);
+//
+//			int out = ps.executeUpdate();
+//			if (out != 0) {
+//				System.out.println("Karyawan Delete With Id=" + nikKaryawan);
+//			} else {
+//				System.out.println("No Karyawan Found With Id=" + nikKaryawan);
+//
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				ps.close();
+//				con.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 	@Override
 	public List<MstKaryawan> findAll() {
@@ -138,13 +145,18 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 
 			while (rs.next()) {
 				MstKaryawan mstKaryawan = new MstKaryawan();
+				MstCompany mstCompany = new MstCompany();
+				
 				mstKaryawan.setNik(rs.getString("NIK"));
 				mstKaryawan.setNamaKaryawan(rs.getString("NAMA"));
-				mstKaryawan.setCompany(rs.getString("COMPANY"));
+				int idCom = (rs.getInt("KODE_COMPANY"));
+				mstCompany = mstCompayDao.findOne(idCom);
+				mstKaryawan.setMstCompany(mstCompany);
 				mstKaryawan.setNoAbsen(rs.getString("NO_ABSEN"));
 				mstKaryawan.setJenisKelamin(rs.getString("JENIS_KELAMIN"));
 				mstKaryawan.setTanggalMasuk(rs.getDate("TANGGAL_MASUK"));
 				mstKaryawan.setNoRekening(rs.getString("NO_REKENING"));
+				mstKaryawan.setStatus(rs.getBoolean("STATUS"));
 				listKaryawan.add(mstKaryawan);
 			}
 
@@ -169,6 +181,7 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		MstKaryawan mstKaryawan = new MstKaryawan();
+		MstCompany mstCompany = new MstCompany();
 
 		try {
 			con = dataSource.getConnection();
@@ -178,11 +191,14 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 			while (rs.next()) {
 				mstKaryawan.setNik(rs.getString("NIK"));
 				mstKaryawan.setNamaKaryawan(rs.getString("NAMA"));
-				mstKaryawan.setCompany(rs.getString("COMPANY"));
+				int idCom = (rs.getInt("KODE_COMPANY"));
+				mstCompany = mstCompayDao.findOne(idCom);
+				mstKaryawan.setMstCompany(mstCompany);
 				mstKaryawan.setNoAbsen(rs.getString("NO_ABSEN"));
 				mstKaryawan.setJenisKelamin(rs.getString("JENIS_KELAMIN"));
 				mstKaryawan.setTanggalMasuk(rs.getDate("TANGGAL_MASUK"));
 				mstKaryawan.setNoRekening(rs.getString("NO_REKENING"));
+				mstKaryawan.setStatus(rs.getBoolean("STATUS"));
 			}
 
 		} catch (SQLException e) {
@@ -206,7 +222,7 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 		String query = "SELECT * "
 				+ "FROM MST_KARYAWAN "
 				+ "WHERE (NIK LIKE '"+search+"' OR NAMA LIKE '"+search+"' "
-				+ "OR COMPANY LIKE '"+search+"' OR NO_ABSEN LIKE '"+search+"' "
+				+ "OR KODE_COMPANY LIKE '"+search+"' OR NO_ABSEN LIKE '"+search+"' "
 				+ "OR JENIS_KELAMIN LIKE '"+search+"' OR TANGGAL_MASUK LIKE '"+search+"' "
 				+ "OR NO_REKENING LIKE '"+search+"') ORDER BY NAMA";
 
@@ -223,13 +239,18 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 
 			while (rs.next()) {
 				MstKaryawan mstKaryawan = new MstKaryawan();
+				MstCompany mstCompany = new MstCompany();
+				
 				mstKaryawan.setNik(rs.getString("NIK"));
 				mstKaryawan.setNamaKaryawan(rs.getString("NAMA"));
-				mstKaryawan.setCompany(rs.getString("COMPANY"));
+				int idCom = (rs.getInt("KODE_COMPANY"));
+				mstCompany = mstCompayDao.findOne(idCom);
+				mstKaryawan.setMstCompany(mstCompany);
 				mstKaryawan.setNoAbsen(rs.getString("NO_ABSEN"));
 				mstKaryawan.setJenisKelamin(rs.getString("JENIS_KELAMIN"));
 				mstKaryawan.setTanggalMasuk(rs.getDate("TANGGAL_MASUK"));
 				mstKaryawan.setNoRekening(rs.getString("NO_REKENING"));
+				mstKaryawan.setStatus(rs.getBoolean("STATUS"));
 				listKaryawan.add(mstKaryawan);
 			}
 		} catch (SQLException e) {
@@ -253,6 +274,7 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		MstKaryawan mstKaryawan = new MstKaryawan();
+		MstCompany mstCompany = new MstCompany();
 
 		try {
 			con = dataSource.getConnection();
@@ -262,11 +284,14 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 			while (rs.next()) {
 				mstKaryawan.setNik(rs.getString("NIK"));
 				mstKaryawan.setNamaKaryawan(rs.getString("NAMA"));
-				mstKaryawan.setCompany(rs.getString("COMPANY"));
+				int idCom = (rs.getInt("KODE_COMPANY"));
+				mstCompany = mstCompayDao.findOne(idCom);
+				mstKaryawan.setMstCompany(mstCompany);
 				mstKaryawan.setNoAbsen(rs.getString("NO_ABSEN"));
 				mstKaryawan.setJenisKelamin(rs.getString("JENIS_KELAMIN"));
 				mstKaryawan.setTanggalMasuk(rs.getDate("TANGGAL_MASUK"));
 				mstKaryawan.setNoRekening(rs.getString("NO_REKENING"));
+				mstKaryawan.setStatus(rs.getBoolean("STATUS"));
 			}
 
 		} catch (SQLException e) {
@@ -298,13 +323,18 @@ public class MstKaryawanDaoImpl implements MstKaryawanDao{
 
 			while (rs.next()) {
 				MstKaryawan mstKaryawan = new MstKaryawan();
+				MstCompany mstCompany = new MstCompany();
+				
 				mstKaryawan.setNik(rs.getString("NIK"));
 				mstKaryawan.setNamaKaryawan(rs.getString("NAMA"));
-				mstKaryawan.setCompany(rs.getString("COMPANY"));
+				int idCom = (rs.getInt("KODE_COMPANY"));
+				mstCompany = mstCompayDao.findOne(idCom);
+				mstKaryawan.setMstCompany(mstCompany);
 				mstKaryawan.setNoAbsen(rs.getString("NO_ABSEN"));
 				mstKaryawan.setJenisKelamin(rs.getString("JENIS_KELAMIN"));
 				mstKaryawan.setTanggalMasuk(rs.getDate("TANGGAL_MASUK"));
 				mstKaryawan.setNoRekening(rs.getString("NO_REKENING"));
+				mstKaryawan.setStatus(rs.getBoolean("STATUS"));
 				listKaryawan.add(mstKaryawan);
 			}
 

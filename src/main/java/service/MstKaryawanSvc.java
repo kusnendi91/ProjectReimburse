@@ -9,7 +9,7 @@ public interface MstKaryawanSvc {
 	public List<MstKaryawan> findAllNotUser();
 	public void save (MstKaryawan mstKaryawan);
 	public void update (MstKaryawan mstKaryawan);
-	public void delete (String nikKaryawan);
+//	public void delete (String nikKaryawan);
 	public MstKaryawan findOne (String nikKaryawan);
 	public List<MstKaryawan> searchData(String key);
 }
